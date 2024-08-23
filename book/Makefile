@@ -1,4 +1,4 @@
-PDF = PhysicalModelingInMatlab4.pdf
+PDF = PhysicalModelingInMatlabAE2440.pdf
 
 PDFFLAGS = -dCompatibilityLevel=1.4 -dPDFSETTINGS=/prepress  \
            -dCompressPages=true -dUseFlateCompression=true  \

@@ -70,32 +70,6 @@ However, one challenge for beginners is that MATLAB uses vectors and matrices fo
 
 Another drawback of MATLAB is that it is ``proprietary''; that is, it belongs to MathWorks, and you can only use it with a license, which can be expensive.
 
-Fortunately, the GNU Project has developed a free, open-source alternative called Octave (see \url{https://www.gnu.org/software/octave}).
-
-Most programs written in MATLAB can run in Octave without modification, and the other way around.  All programs in this book have been tested with Octave, so if you don't have access to MATLAB, you should be able to work with Octave.  The biggest difference you are likely to see is in the error messages.
-
-To install and run MATLAB, see \url{https://greenteapress.com/matlab/matlab}.
-
-The first time you run it, a start window should appear to guide you through some configuration.
-
-To install Octave, I recommend that you use Anaconda, which is a package management system that makes it easy to work with Octave and supporting software.
-
-Anaconda installs everything at the user level, so you can install it without admin or root permissions.  Follow the instructions for your operating system at \url{https://greenteapress.com/matlab/anaconda}.
-
-Once you have Anaconda, you can install Octave by launching the Jupyter Prompt (on Windows) or a Terminal (on Mac OS or Linux), typing the following, and pressing \textsf{enter}:
-
-\begin{code}
-conda install -c conda-forge octave
-\end{code}
-
-Then you can launch it by typing:
-
-\begin{code}
-octave
-\end{code}
-
-and pressing \textsf{enter}.
-
 \section{Working with the Code}
 
 The code for each chapter in this book is in a ZIP file you can download from \url{https://greenteapress.com/matlab/zip}.
@@ -112,19 +86,22 @@ They are plain text files, so you can read them with any application that reads 
 
 I'll provide more information about working with these files when we get to them, but that should be enough to get you started.
 
-%If you open any of these files in MATLAB, you should be able to read %the code.  To run it, press the green \textbf{Run} button.
+If you open any of these files in MATLAB, you should be able to read the code.  To run it press the green \textbf{Run} button.
 
-%You might get a message like ``File not found in the current folder.''
-%MATLAB will give you the option to Change Folder or Add to Path.  If %you change folders, you will be able to run this file until you %change folders again.  If you add to the path, you will always be %able to run this file.
+You might get a message like ``File not found in the current folder.''
+MATLAB will give you the option to Change Folder or Add to Path.  If you change folders, you will be able to run this file until you change folders again.  If you add to the path, you will always be able to run this file.
 
-%However, as you add more folders to the path, you are more likely to %run into problems with name collisions.
-%I recommend you change folders when necessary and avoid adding %folders to the path.
+However, as you add more folders to the path, you are more likely to run into problems with name collisions.
+I recommend you change folders when necessary and avoid adding folders to the path.
 
+\section{AE2440 Version}
+
+This `AE2440' version of the book is a customization and extention of Allen Downey's fourth edition of \href{https://greenteapress.com/wp/physical-modeling-in-matlab/}{Physical Modeling in MATLAB}.
 
 \section*{Contributors}
 
-If you discover an error in this book or the supporting code, or you have suggestions for improving them, please send them to \emph{downey@greenteapress.com}. Or, if you are a GitHub user, you can open an issue or a pull request at \url{https://github.com/AllenDowney/PhysicalModelingInMATLAB}.
-
+If you discover an error the AE2440 version this book or the supporting code, or you have suggestions for improving them, please send them to \emph{bbingham@nps.edu}. Or, if you are a GitHub user, you can open an issue or a pull request at \url{https://github.com/bsb808/PhysicalModelingInMatlab}.
+    
 Special thanks to my collaborators at No Starch Press for their work on this book: Alex Freed, Katrina Taylor, Kelly Kearney, Barbara Yien, Bill Pollock, Richard Hutchinson, and Lisa Devoto Farrell.
 
 Other people who have found errors and helped improve this book include

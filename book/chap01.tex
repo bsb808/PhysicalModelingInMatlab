@@ -1,6 +1,8 @@
 \chapter{Modeling and Simulation}
 \label{modeling}
 
+\epigraph{All models are wrong \linebreak but some are useful.}{\textit{George E. P. Box}}
+
 This book is about modeling and simulating physical systems. Before we can build any models, it'll help to have a high-level understanding of what a model is. We'll also need to familiarize ourselves with the tools we use to build them. In this chapter, we'll look at the modeling process and introduce MATLAB, the programming language we'll use to represent models and run \mbox{simulations}. At the end of the chapter you'll find exercises you can use to test your knowledge.
 
 
@@ -71,7 +73,7 @@ Figure~\ref{fig:modeling} shows that models can be used for both analysis and si
 \label{calc}
 
 MATLAB is a programming language with features that support modeling and simulation.  It has a lot of features, so it can seem overwhelming, but at heart MATLAB is a glorified calculator.  When you start MATLAB you should see a window entitled MATLAB that contains smaller windows entitled Current Folder, Command Window, and Workspace.
-In Octave, Current Folder is called File Browser.
+%In Octave, Current Folder is called File Browser.
 
 \index{Command Window}
 \index{workspace}
@@ -404,6 +406,8 @@ Your variables are:
 x  y  z
 \end{code}
 
+This information, what variables are in the current workspace, is also shown in the "Workspace" widget in the MATLAB integrated development environment (IDE).  The default layout has this widget on the right side of the MATLAB IDE window.
+
 The \lstinline{clear} command removes specified variables from the workspace:
 
 \begin{code}
@@ -625,9 +629,13 @@ we get to vectors and matrices a few chapters from now.
 \index{vector}
 \index{matrix}
 
-The \lstinline{doc} pages are usually better.
-If you enter \lstinline{doc sin}, a browser window appears with more detailed information about the function, including examples of how to use it.  The examples often
-use vectors and matrices, so they may not make sense yet,
+The \lstinline{doc} pages are usually better.  You can access the \lstinline{doc} pages in at least two ways:
+
+\begin{enumerate}
+\item If you enter \lstinline{doc sin}, a browser window appears with more detailed information about the function, including examples of how to use it. 
+\item If you do a websearch for "matlab sin" you will find the same documentation in one of the first results.
+\end{enumerate}
+The examples often use vectors and matrices, so they may not make sense yet,
 but you can get a preview of what's coming.
 
 
