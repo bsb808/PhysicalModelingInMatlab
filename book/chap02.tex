@@ -1,9 +1,8 @@
-\chapter{Scripts}
+\chapter{Scripts and Live Scripts}
 
-So far we've typed all of our programs ``at the prompt.'' If you're only writing a few lines, this isn't so bad. But what if you're writing a hundred? Retyping each line of code every time you want to change or test your program will be time-consuming and tedious. Luckily, you don't have to. In this chapter, we'll look at a way to run many lines at once: scripts.
+So far we've typed all of our programs ``at the prompt.'' If you're only writing a few lines, this isn't so bad. But what if you're writing a hundred? Retyping each line of code every time you want to change or test your program will be time-consuming and tedious. Luckily, you don't have to. In this chapter, we'll look at two ways to run many lines at once: \emph{scripts} and \emph{live scripts}.
 
-
-\section{Your First Script}
+\section{Scripts}
 
 A \emph{script} is a file that contains MATLAB code. When you run a script, MATLAB executes the commands in it, one after another, exactly as if you had typed them at the prompt. Scripts are
 also sometimes called \emph{M-files} because they use the extension \emph{.m}, short for MATLAB.
@@ -12,7 +11,9 @@ also sometimes called \emph{M-files} because they use the extension \emph{.m}, s
 \index{M-file}
 \index{file extension}
 
-You can create scripts with any text editor or word processor, but the simplest way is to click the \textbf{New Script} button in the upper-left corner of the MATLAB interface, which opens a text editor designed for MATLAB.
+\subsection{Your First Script}
+
+You can create scripts with any text editor or word processor, but the simplest way is to click the \textbf{New->Script} button in the upper-left corner of the MATLAB interface, which opens a text editor designed for MATLAB, simpl;y called the "Editor".
 
 To try it out, create a new script and enter the following code:
 
@@ -24,7 +25,7 @@ Then press the \textbf{Save} button.  A dialog window should appear where you ca
 Change the name to \emph{myscript.m} and save it into any folder you like.
 
 Now click the green \textbf{Run} button.  You might get a message that says the script is not found in the current folder.
-If so, click the button that says Change Folder and it should run.
+If so, click the button that says Change Folder and it should run.  A handy way to discover the current folder in which the Command Window is operating is to issue the \lstinline{pwd} command - for 'print working directory'.
 
 \index{Command Window}
 
@@ -62,7 +63,7 @@ Undefined function or variable 'my'.
 It can be hard to remember which folder a script is in.  To keep things simple,
 for now, I suggest putting all of your scripts in one folder.
 
-\section{Why Scripts?}
+\subsection{Why Scripts?}
 
 There are a few good reasons to use a script. When you're writing more than a couple of lines of code, it might take a few tries to get everything right.  Putting your code
 in a script makes it easier to edit than typing it at the prompt. Likewise, if you're running a script repeatedly, it's much faster to type the name of the script than to retype the code! And you might be able to reuse a script from one project to the next, saving you considerable time across projects.
@@ -90,7 +91,7 @@ is the code you think you are running.
 
 Now that you've seen how to write a script, let's use one to do something a little more complicated.
 
-\section{The Fibonacci Sequence}
+\subsection{Example: The Fibonacci Sequence}
 
 \index{Fibonacci number}
 \index{sequence!Fibonacci}
@@ -160,7 +161,7 @@ not where it was caused.
 
 Often you have to work backwards to find the line of code (or missing line) that caused the problem.
 
-\section{Floating-Point Numbers}
+\subsection{Floating-Point Numbers}
 
 In the previous section, the result we computed was \lstinline{55.0000}.  Since the Fibonacci numbers are integers, you might have been surprised to see the zeros after the decimal point.
 
@@ -270,7 +271,7 @@ ans = NaN
 \end{code}
 
 
-\section{Comments}
+\subsection{Comments}
 
 Short, simple programs are easy to read, but as they get bigger and more complex, it gets harder to figure out what they do and how.  That's what comments are for.
 
@@ -319,7 +320,7 @@ program consistent with your math.
 
 \index{variable name}
 
-\section{Documentation}
+\subsection{Documentation}
 
 Every script should provide \emph{documentation}, which is a comment
 that explains what the script does and what its requirements are.
@@ -362,7 +363,7 @@ Help Window.
 \index{doc@\lstinline{doc}}
 \index{help@\lstinline{help}}
 
-\section{Assignment and Equality}
+\subsection{Assignment and Equality}
 
 For beginning programmers, a common source of confusion is assignment and the use of the equals sign.
 
@@ -422,14 +423,52 @@ When you read MATLAB code, you might find it helpful to pronounce
 the equals sign as ``gets'' rather than ``equals.''  So \lstinline{x = y + 1}
 is pronounced ``\lstinline{x}~gets the value of \lstinline{y} plus one.''
 
+\section{Live Scripts}
+
+A MATLAB \emph{live script} is an interactive document that combines code, formatted text (e.g., equations), images and output in once place.  In one sense it merges the code from a script with the execution of the command window.  A live script allows you to run sections of your program independently, debugging as you go, while embedding the computation in a portable document that you can export and share.
+
+\subsection{Your First Live Script}
+
+While regular (non-live) scripts are stored as a text file with the \emph{.m} extension, live scripts are stored as package of code, rich text and images.   Luckily, MATLAB hides all this complexity from the user and what you see is a single document, stored as a \emph{.mlx} file.
+
+You can create a live script by clicking the \textbf{New->Live Script} button in the upper-left corner of the MATLAB interface.  This opens the MATLAB "Live Editor".  Create a new live script and add the following:
+
+\begin{enumerate}
+\item Add a text block.  This is rich text that can be formatted using the buttons on the top of the Live Editor or using \href{https://www.mathworks.com/help/matlab/matlab_prog/format-live-scripts.html}{markdown}.
+\item Add a code block with the line \lstinline{x = 5}.
+\end{enumerate}
+
+Then press the \textbf{Save} button to save the file as \emph{mylivescript.mlx}.
+
+Now click the same green \textbf{Run} button (or hit F5) to run the scipt and see the result in the same document.  You can still call the live script from the Command Window:
+\begin{code}
+  >> mylivescript
+  x =
+       5
+\end{code}
+But that is probably a rare use-case.
+
+In addition to saving the live script as an \emph{.mlx} file, you can also export the document in a variety of formats.  Here is what the a PDF export might look like:
+
+
+\includepdf[pages=-,frame,pagecommand={},width=0.9\textwidth]{../code/chap02/mylivescript.pdf}
+
+\subsection{Example: The Fibonacci Sequence}
+
+Returning to our earlier example of a plain script, we can now combine the rich text of the description, inlcuding the expression for the Fibonacci number, into a live script with alternating text and code blocks.  The resulting PDF would look something like this: 
+
+\includepdf[pages=-,frame,pagecommand={},width=0.9\textwidth]{../code/chap02/fibonacci1_live.pdf}
+%\includepdf[pages=-,frame,pagecommand={},width=0.9\textwidth]{../code/chap02/mylivescript.pdf}
+
 \section{Chapter Review}
 
-This chapter presented scripts and suggested reasons to use them.  We computed elements of a Fibonacci sequence, but because we used floating-point numbers, the results were sometimes only approximate.
+This chapter presented scripts and live scirpts, suggesting reasons to use them.  We computed elements of a Fibonacci sequence, but because we used floating-point numbers, the results were sometimes only approximate.
 And we saw how to add comments to a program to document what it does and explain how it works.
 
 Here are some terms from this chapter you might want to remember.
 
-An \emph{M-file} is a file that contains a \emph{script}, which is a sequence of MATLAB/Octave commands.
+An \emph{M-file} is a file that contains a \emph{script}, which is a sequence of MATLAB commands.
+An \emph{MLX-file} is a file that contains a \emph{live script}, which is a collection of MATLAB code, rich text and graphics.
 The \emph{search path} is the list of folders where the interpreter looks for
 M-files.
 

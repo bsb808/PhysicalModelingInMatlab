@@ -378,6 +378,39 @@ Too many input arguments.
 
 That's a better error message, because it's clear that the problem isn't in the function, it's in the way we're using the function.
 
+\section{Multiple Output Variables}
+
+Functions can also return multiple output variables.  Here is an example of a function that returns two variables:
+\begin{code}
+function [s, p] = sum_and_product(a, b) 
+    s = a + b;
+    p = a * b;
+\end{code}
+
+We can call this function and assign the output to variables in the workspace, making sure to include the square brackets, like this:
+\begin{code}
+    >> [added, multiplied] = sum_and_product(4, 5)
+    added =
+         9
+    multiplied =
+        20
+\end{code}
+
+There are some potential gotchas here as well.  If we only provide one output in the function call, MATLAB will return just the first output variable without a warning or errror:
+\begin{code}
+    >> added = sum_and_product(4, 5)
+    added =
+         9    
+\end{code}
+Also, if we don't include the square brackets, both variables will be assigned the first output, which is probably not what we would intend:
+\begin{code}
+    >> added, multiplied = sum_and_product(4, 5)
+    added =
+         9
+    multiplied =
+         9
+\end{code}
+
 \section{Chapter Review}
 
 Now that we know about functions, and all the ways they can go wrong, let's put them to good use.  In the next chapter we'll develop a program that uses several functions to search for Pythagorean triples (and I'll explain what those are).

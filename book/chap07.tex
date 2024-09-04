@@ -1,11 +1,11 @@
-\chapter{Zero-Finding and Function Handles}
+\chapter{Function Handles and Zero-Finding}
 \label{fzero}
 
+In this chapter we'll learn how to use \emph{function handles} to pass a function to a MATLAB solver such as the MATLAB function \lstinline{fzero}.   This is a common technique we'll see later in applications of numerically solving differential equations and performing optimizations.
 
-In this chapter we'll use the MATLAB function \lstinline{fzero} to solve nonlinear equations.
+To demonstrate the technique we'll the MATLAB function \lstinline{fzero} to solve nonlinear equations.
 Nonlinear equations are useful for modeling physical systems; for example, in one of
 the exercises at the end of this chapter, you can use \lstinline{fzero} to find the equilibrium point of an object floating on water.
-Using \lstinline{fzero} is also an opportunity to learn about \emph{function handles}, which we'll need for the following chapters.
 
 \section{Solving Nonlinear Equations}
 
@@ -51,7 +51,11 @@ do next.
 
 {\binoppenalty=\maxdimen%
 \relpenalty=\maxdimen% [keeps the equation from being broken across lines]
-To demonstrate a numerical solution, consider the equation $x^2 - 2x = 3$.  You could solve this analytically, either by factoring it or by
+To demonstrate a numerical solution, consider the equation 
+\begin{equation} \label{e:fzero}
+x^2 - 2x = 3.
+\end{equation}  
+You could solve this analytically, either by factoring it or by
 using the quad\-ratic formula, and you would discover that there are
 two solutions, $x=3$ and $x=-1$.  Alternatively, you could solve it
 numerically by rewriting it as $x = \pm \sqrt{2x+3}$.}
@@ -105,11 +109,18 @@ We'll see a better alternative in the next section.
 \index{error function}
 \index{function!error}
 
-The MATLAB function \lstinline{fzero} that uses numerical methods to search for solutions to nonlinear equations.  In order to use it, we have to rewrite the equation as an \emph{error function}, like this:
-
+The MATLAB function \lstinline{fzero} that uses numerical methods to search for solutions to nonlinear equations. The documentation of the \lstinline{fzero} starts with
+\begin{stdout}
+fzero  Single-variable nonlinear zero finding. 
+    X = fzero(FUN,X0) tries to find a zero of the function FUN near X0, 
+    if X0 is a scalar. 
+\end{stdout}
+which tells us we need to pass in the function \mcode{FUN} as the first argument to the \mcode{fzero} tool.
+In order to do this, we have to rewrite Eq.~(\ref{e:fzero}) as an \emph{error function},
 \begin{equation*}
-f(x) = x^2 - 2x -3
+f(x) = x^2 - 2x -3,
 \end{equation*}
+and pass that function to \mcode{fzero} as a \emph{function handle}.
 
 The value of the error function is 0 if $x$ is a solution and nonzero if it is not.
 This function is useful because we can use values of $f(x)$, evaluated at various values of $x$, to infer the location of the solutions.  And that's what \lstinline{fzero} does.
@@ -119,12 +130,12 @@ Values of $x$ where $f(x) = 0$ are called zeros of the function or \emph{roots}.
 \index{fzero@\lstinline{fzero}}
 
 To use \lstinline{fzero} you have to define a MATLAB function that computes the error function, like this:
-
 \begin{code}
 function res = error_func(x)
     res = x^2 - 2*x -3;
 end
 \end{code}
+The classical way of defining this function 
 
 You can call \lstinline{error_func} from the Command Window and confirm that $3$ and $-1$ are zeros:
 

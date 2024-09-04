@@ -25,3 +25,5 @@
 *.pdf
 *.tex.bak
 book/html
+*.fls
+*.fdb_latexmk
