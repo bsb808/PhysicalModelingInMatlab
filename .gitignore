@@ -22,7 +22,8 @@
 *.mtc1
 *.out
 *.synctex.gz
-*.pdf
+#*.pdf
+book/images/figure*converted-to.pdf
 *.tex.bak
 book/html
 *.fls
