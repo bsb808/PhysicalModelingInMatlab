@@ -41,15 +41,15 @@ interaction is called a \emph{name collision}.
 \index{script}
 
 As the number of scripts you write increases, and they get longer
-and more complex, name collisions become more of a problem.  Avoiding
-this problem is one of several motivations for functions.
+and more complex, name collisions become more of a problem.  One of the several motivations for functions is to avoid this problem by limiting the \emph{scope} of the variables within the function to be \emph{local} to that function.  This is one instance of \emph{encapsulation}, a common strategy to manage program complexity.  The function encapsulates the local variables so that they are only accessible within the function.
+
 
 \section{Defining Functions}
 
-A \emph{function} is like a script, except that each function has its own workspace, so any variables defined
+A \emph{function} is like a script, except that each function has its own workspace, so any local variables defined
 inside a function only exist while the function is running and don't
 interfere with variables in other workspaces, even if they have the
-same name.
+same name.  In other words, the scope of the local variables within the function are limited to only the operations the function.
 Function inputs and outputs are defined carefully to avoid
 unexpected interactions.
 
@@ -410,6 +410,38 @@ Also, if we don't include the square brackets, both variables will be assigned t
     multiplied =
          9
 \end{code}
+
+\section{Local Functions}
+The primary way to create a MATLAB function is to have a single function in a single m-file where the function and the file share the same name.  An alternative is to have a function within a script or to have multiple functions within the same m-file, called a \emph{local function}.   This can be helpful if you don't want to create an manage many separate files. These local functions are only accessible from file in which they are defined; they can't be accessed directly from the command line.
+
+For example, we could create a scipt named \Verb[fontshape=it]|local_function_demo.m|
+with the following code:
+
+\begin{code}
+    function y = my_local_func(x)
+    % Local function to compute the square of x.
+    y = x^2;
+    end
+    
+    % Call the local function
+    b = my_local_func(2)    
+\end{code}
+
+Then we can run the script from the command window:
+\begin{code}
+    >> local_function_demo
+    b =
+         4
+\end{code}
+which works as expected.  You might also notice that you can't call the \lstinline{my_local_func} directly from the command window, because it is local to the script:
+\begin{code}
+    >> my_local_function(3)
+    Unrecognized function or variable 'my_local_function'. 
+\end{code}
+
+This behavior is particularly useful when using live scripts so that you can have various functions and the code that calls them all in the same live script document.
+
+Note: Before R2024a, local functions in scripts must be defined at the end of the file, after the last line of script code.
 
 \section{Chapter Review}
 
