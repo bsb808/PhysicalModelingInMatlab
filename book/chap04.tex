@@ -2,15 +2,25 @@
 \label{vectors}
 
 
-In the previous chapter we used a loop to compute the elements of a sequence, but we were only able to store the last element.  In this chapter, we'll use a vector to store all of the elements.
+In the previous chapter we used a loop to compute the elements (scalars) of a sequence, but we were only able to store the last element.  In this chapter, we'll use a vector to store all of the elements in an array.
 We'll also learn how to select elements from a vector, and how to perform vector arithmetic and common vector operations like reduce and apply.
+
+MATLAB is an abbreviation for "matrix laboratory."  The program was designed to operate with matrices, arrays and vectors.  The \emph{array} datatype is the fundamental mechanism MATLAB uses for storing numerical elements, so scalars, vectors and matrices are all special types of arrays.  MATLAB uses this terminology as follows:
+
+\begin{description}
+\item[scalar] is an array with just a single element.
+\item[vector] is a two-dimensional array that has a size 1-by-N (row) or N-by-1 (column).
+\item[matrix] is a two-dimensional array.
+\item[array] may have more than two dimensions 
+\end{description}
+
 
 
 \section{Creating Vectors}
 
 \index{vector}
 
-A \emph{vector} in MATLAB is a sequence of numbers.
+A \emph{vector} in MATLAB is a sequence of numbers, stored as an array.
 There are several ways to create vectors; one of the most common is
 to put a sequence of numbers in square brackets:
 
@@ -18,6 +28,16 @@ to put a sequence of numbers in square brackets:
 >> [1 2 3]
 ans = 1     2     3
 \end{code}
+
+The \lstinline{size} function tells you the number of elements in each dimension.
+
+\begin{code}
+>> size(X)
+ans =
+    1     3
+\end{code}
+This indicates that \lstinline{X} is a 1-by-3 array.  We will learn later that this is a \emph{row} vector.
+
 
 Another way to create a vector is the colon operator, which we have already used to create a range of values in a \lstinline{for} loop.
 
@@ -45,8 +65,10 @@ That's just a convention; MATLAB doesn't require it, but it's a useful way to re
 \index{vector arithmetic}
 \index{arithmetic!vector}
 
-As with numbers, you can do arithmetic with vectors.  If you add a number
-to a vector, MATLAB increments each element of the vector:
+As with numbers, you can do arithmetic with vectors.  However, operations with vectors can be done in more than one way, so to avoid logical errors, we need to be more intentional with the instructions we provide.  In general, MATLAB executes both \emph{array operations} and \emph{matrix operations}.   Matrix operations follow the rules of linear algrebra, while array operations execute element by element.  The syntax for each can be closely related.
+
+
+If you add a scalar to a vector, MATLAB does the array operation increments each element of the vector:
 
 \begin{code}
 >> Y = X + 5
@@ -71,13 +93,21 @@ Otherwise you get an error:
 >> W = [1 2]
 W = 1     2
 
->> X + W
-Matrix dimensions must agree.
+>> X+W
+Arrays have incompatible sizes for this operation.
+Related documentation 
 \end{code}
 
-This error message might be confusing, because we think of \lstinline{X} and \lstinline{W} as vectors, not matrices.
-But in MATLAB, a vector is a kind of matrix.
-We'll come back to matrices later, but in the meantime, you might see the term in error messages and documentation.
+The \lstinline(size()) function can be helpful in debugging runtime errors of vector/matrix sizing, e.g.,
+\begin{code}
+    >> size(X)
+    ans =
+         1     3
+    >> size(W)
+    ans =
+         1     2
+\end{code}
+might help us invesigate whey we received the `Matrix dimensions must agree' error.
 
 \index{matrix}
 \index{elementwise operator}
@@ -90,15 +120,15 @@ If you divide two vectors, you might be surprised by the result:
 ans = 0.2953
 \end{code}
 
-MATLAB is performing an operation called right division, which is not what we expected.
-To divide the elements of \lstinline{X} by the elements of \lstinline{Y}, you have to use \lstinline{./}, which is element-wise division:
+MATLAB is performing a matrix operation called right-matrix division, which is not what we expected.  (See the \lstinline{mrdivid()} function documentation for more details.)
+If, instead, we wanted MATLAB to do the array operation o divide the elements of \lstinline{X} by the elements of \lstinline{Y}, you have to use \lstinline{./}, which is element-wise division:
 
 \begin{code}
 >> X ./ Y
 ans = 0.1667    0.2857    0.3750
 \end{code}
 
-Multiplication has the same problem.  If you use \lstinline{*}, MATLAB does matrix multiplication.  With these two vectors, matrix multiplication is not defined, so you get an error:
+Multiplication has the same problem.  If you use \lstinline{*}, MATLAB does matrix multiplication following the rules of linear algebra.  With these two vectors, matrix multiplication is not defined, so you get an error:
 
 \begin{code}
 >> X * Y
@@ -122,12 +152,13 @@ ans = 6    14    24
 As an exercise, see what happens if you use the exponentiation operator
 (\lstinline{^}) with a vector.
 
-\section{Selecting Elements}
+\section{Indexing and Slicing}
+
+In MATLAB, array \emph{indexing} refers to accessing specific elements of an array using their position, while \emph{slicing} allows selecting multiple elements, such as a range of rows, columns, or both.  MATLAB uses 1-based indexing, meaning the first element is at position 1. To access an element, you specify its index in parentheses. For example, for vector \lstinline{Y}:
 
 \index{element}
 \index{parentheses}
 
-You can select an element from a vector with parentheses:
 
 \begin{code}
 >> Y = [6 7 8 9]
@@ -141,7 +172,7 @@ ans = 9
 \end{code}
 
 This means that the first element of \lstinline{Y} is \lstinline{6} and the
-fourth element is~\lstinline{9}.
+fourth element is~\lstinline{9}.  
 The number in parentheses is called the \emph{index} because it indicates which element of the vector you want.
 
 \index{index}
@@ -185,6 +216,22 @@ end
 
 This version works for a vector of any length.
 
+When slicing a vector, you can extract a subset of the array using colon notation \lstinline{:} to indicate ranges.
+\begin{code}
+    >> B = [1, 2, 3, 4, 5]
+    B =
+         1     2     3     4     5
+    >> C = B(2:4)
+    C =
+         2     3     4
+\end{code}
+
+You can also slice a vector to extract the elements described by another vector:
+\begin{code}
+    >> D = B([2 5])
+    D =
+         2     5
+\end{code}
 
 \section{Indexing Errors}
 
@@ -215,9 +262,24 @@ If the index is too big, you also get an error:
 Index exceeds the number of array elements (4).
 \end{code}
 
-The error messages use the word \emph{array} rather than \emph{matrix}, but they mean the same thing, at least for now.
-
-\index{array}
+The \lstinline{end} keyword can help with indexing and slicing.  It refers to the maximum index value, so that
+\begin{code}
+    >> Y(end)
+    ans =
+         8
+\end{code}
+will index the last element in the vector no matter how many elements are inlcuded.  This is particularly helpful when slicing the last N elements of a vector:
+\begin{code}
+    >> G = 1:10
+    G =
+         1     2     3     4     5     6     7     8     9    10
+    >> N = 5
+    N =
+         5
+    >> H = G(end-N:end)
+    H =
+         5     6     7     8     9    10
+\end{code}
 
 \section{Vectors and Sequences}
 \label{vecseq}
