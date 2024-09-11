@@ -291,6 +291,8 @@ Try this:
 >> plot(1, 1, 'ro')
 >> plot(2, 2, 'go')
 >> plot(3, 3, 'bo')
+>> xlabel('x axis label [units]')
+>> ylabel('y axis label [units]')
 >> hold off
 \end{code}
 
@@ -299,7 +301,13 @@ The \lstinline{clf} command clears the figure before we start plotting.
 \index{clear figure}
 \index{clf@\lstinline{clf}}
 
-If you run the code above, you should see a figure with three circles.  MATLAB scales the plot automatically so that the axes run from the lowest values in the plot to the highest.
+If you run the code above, you should see a figure with three circles and text labels on the axes similar to Figure~\ref{fig:ex}.  MATLAB scales the plot automatically so that the axes run from the lowest values in the plot to the highest.
+
+\begin{figure}[h]
+    \centerline{\includegraphics[scale=0.8]{images/fig03_ex.png}}
+    \caption{Simple figure with three markers and axes labels.}
+    \label{fig:ex}
+\end{figure}
 
 \begin{ex}
 Modify \emph{bike\textunderscore loop.m} so that it clears the figure before running the loop.  Then, each time through the loop, it should plot the value of \lstinline{b} versus the value of \lstinline{i} with a red circle.

@@ -8,10 +8,10 @@ We'll also learn how to select elements from a vector, and how to perform vector
 MATLAB is an abbreviation for "matrix laboratory."  The program was designed to operate with matrices, arrays and vectors.  The \emph{array} datatype is the fundamental mechanism MATLAB uses for storing numerical elements, so scalars, vectors and matrices are all special types of arrays.  MATLAB uses this terminology as follows:
 
 \begin{description}
-\item[scalar] is an array with just a single element.
-\item[vector] is a two-dimensional array that has a size 1-by-N (row) or N-by-1 (column).
-\item[matrix] is a two-dimensional array.
-\item[array] may have more than two dimensions 
+\item[scalar:] an array with a single element.
+\item[vector:] a two-dimensional array that has a size 1-by-N (row) or N-by-1 (column).
+\item[matrix:] a two-dimensional array.
+\item[array:] may have more than two dimensions
 \end{description}
 
 
@@ -327,12 +327,14 @@ y-axis.  To plot the Fibonacci numbers we computed in Listing~\ref{lst:fib_vec},
 
 \begin{code}
 plot(F)
+xlabel('Index [n/a]')
+ylabel('Fibonacci number [n/a]')
 \end{code}
 
 Figure~\ref{fig:fibonacci} shows the result.
 
 \begin{figure}[h]
-\centerline{\includegraphics[scale=0.8]{images/figure04_01_new_v1.eps}}
+\centerline{\includegraphics[scale=0.7]{images/figure04_fib}}
 \caption{The first 10 elements of the Fibonacci sequence}
 \label{fig:fibonacci}
 \end{figure}

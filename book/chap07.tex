@@ -310,38 +310,41 @@ When you're solving problems in the real world, you'll usually
 have some intuition about the answer.  This intuition is often enough
 to provide  a good initial guess.
 
-\index{ezplot@\lstinline{ezplot}}
-\index{plot!\lstinline{ezplot}}
-
 If not, another way to choose an initial guess is to plot the error function and
-approximate the zeros visually.  If you have a function like
-\lstinline{error_func} that takes a scalar input variable and returns
-a scalar output variable, you can plot it with \lstinline{ezplot}:
+approximate the zeros visually.  Here is a short script to do just that:
 
-\begin{code}
->> ezplot(@error_func, [-2,5])
-\end{code}
+\lstinputlisting[style=mcode]{../code/chap07/plot_error.m}
 
-The first argument is a function handle; the second is the interval you want to plot the function in.
-By examining the plot, you can estimate the locations of the two roots.
+We've used the \lstinline{linspace} command to create a vector starting at -2, ending with 5, with 100 elements. The \lstinline{grid on} command displays the gray gridlines, which help identify the zero crossings.  You may also notice that if you use by hovering the cursor over the graph, MATLAB will display the nearest data point values using the \emph{data tips} interactive tool, illustrated in Figure~\ref{f:error_data}
+
+\begin{figure}[h]
+    \centerline{\includegraphics[width=0.7\textwidth]{images/error_w_data.png}}
+    \caption{Visualization of the error function.}
+    \label{f:error_data}
+\end{figure}
 
 
-\subsection{Vectorizing Functions}
+    \subsection{Vectorizing Functions}
 
 \index{vectorizing}
 \index{function!vectorizing}
 
-When you call \lstinline{ezplot}, you might get the following warning:
+When you call the plotting script, you might get the following warning:
 
-\begin{code}
-Warning: Function failed to evaluate on array inputs;
-vectorizing the function may speed up its evaluation and
-avoid the need to loop over array elements.
-\end{code}
+\begin{stdout}
+Error using  ^ 
+Incorrect dimensions for raising a matrix to a power. Check that the matrix
+is square and the power is a
+scalar. To operate on each element of the matrix individually, 
+use POWER (.^) for elementwise power.
+Error in error_func (line 2)
+    res = x^2 - 2.*x -3;
+Error in plot_error (line 3)
+y = error_func(x); 
+\end{stdout}
 
 This means that MATLAB tried to call \lstinline{error_func} with a vector, and it failed.
-The problem is that it uses the \lstinline{*} and \lstinline{^} operators.  With vectors, those operators don't do what we want, which is \emph{element-wise} multiplication and exponentiation
-(see ``\nameref{elementwise}'' on page~\pageref{elementwise}).
+The problem is that it uses the \lstinline{*} and \lstinline{^} operators which refer to matrix operations that follow the rules of linear algebra.  In this case this is not what we we intend; instead we want to do \emph{element-wise} array multiplication and exponentiation (see ``\nameref{elementwise}'' on page~\pageref{elementwise}).
 
 \index{element-wise operator}
 \index{operator!element-wise}
@@ -353,8 +356,7 @@ function res = error_func(x)
     res = x.^2 - 2.*x -3;
 end
 \end{code}
-the warning message goes away, and \lstinline{ezplot} runs faster.
-
+the warning message goes away.
 
 \section{Debugging}
 
@@ -479,7 +481,6 @@ Before you go on, you might want to work on the following exercises.
 \begin{enumerate}
 
 \index{Chebyshev polynomial}
-\index{ezplot@\lstinline{ezplot}}
 
 \item Write a function called \lstinline{cheby6} that evaluates the
 sixth Chebyshev polynomial.  It should take an input variable,
@@ -489,7 +490,7 @@ $x$, and return
 32 x^6 - 48 x^4 + 18 x^2 - 1
 \end{equation*}
 
-\item Use \lstinline{ezplot} to display a graph of this function in the
+\item Use \lstinline{plot} to display a graph of this function in the
 interval from $-1$ to $1$.  Estimate the location of any zeros in this
 range.
 

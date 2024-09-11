@@ -8,6 +8,6 @@ for i=3:n
 end
 
 plot(F)
-xlabel('Index')
-ylabel('Fibonacci number')
-saveas(gcf, '../../book/figs/fibonacci.eps', 'epsc')
+xlabel('Index [n/a]')
+ylabel('Fibonacci number [n/a]')
+%saveas(gcf, '../../book/ figs/fibonacci.eps', 'epsc')

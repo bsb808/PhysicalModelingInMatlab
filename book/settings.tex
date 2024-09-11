@@ -100,6 +100,24 @@
 \definecolor{lightergray}{gray}{0.95}
 \usepackage{listings}
 
+\lstdefinestyle{mcode}{
+  language=matlab,
+  basicstyle=\ttfamily,
+  backgroundcolor=\color{bgcolor},
+  commentstyle=\color{codegreen},
+  keywordstyle=\color{codeblue},
+  stringstyle=\color{codepurple},
+  columns=fullflexible,
+  emph={label},  % keyword?
+  keepspaces=true,
+  showstringspaces=false,
+  upquote=true,
+  xleftmargin=0pt,  % \parindent
+  framexleftmargin=3pt,
+  aboveskip=\parskip,
+  belowskip=\parskip
+}
+
 \lstset{
     language=matlab,
     basicstyle=\ttfamily,
@@ -117,6 +135,8 @@
     aboveskip=\parskip,
     belowskip=\parskip
 }
+
+\lstset{style=mcode}
 
 \lstnewenvironment{code}{}{}
 \lstnewenvironment{stdout}{\lstset{commentstyle=,keywordstyle=,stringstyle=}}{}
