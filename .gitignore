@@ -28,3 +28,4 @@ book/images/figure*converted-to.pdf
 book/html
 *.fls
 *.fdb_latexmk
+*.asv
