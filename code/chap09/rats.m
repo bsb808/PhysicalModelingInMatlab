@@ -1,25 +1,20 @@
 % Use ode45 to predict rat population growth.
 
 function res = rats()
-    t = 365/2;
-    y = 1000;
-    res = rate_func(t, y);
+    % Initial condition
+    rats_init = 1000; 
+    % Time span
+    t_span = [0, 365];
 
-    %ts = linspace(0, 365);
-    %ys = rate_func(ts, 2000);
-    %plot(ts, ys);
-
-    [T, Y] = ode45(@rate_func, [0, 365], 1000);
-    plot(T, Y)
+    [tt, rats] = ode45(@rate_func, t_span, rats_init);
+    plot(tt, rats)
     xlabel('Time (days)')
     ylabel('Population (rats)')
-    saveas(gcf, '../../book/figs/rats.eps', 'epsc')
-
-    Y(end)
 end
 
-function res = rate_func(t, y)
+function res = rate_func(t, rats)
+    %RATE_FUNC returns the growth rate at time (t) for population (rats)
     a = 0.002;
     omega = 2*pi / 365;
-    res = a * y * (1 - cos(omega * t));
+    res = a * rats * (1 - cos(omega * t));
 end

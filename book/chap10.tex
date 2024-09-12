@@ -300,7 +300,7 @@ this function to be a column vector.
 \index{semicolon}
 
 As always, it's a good idea to test your rate function before you call \lstinline{ode45}.
-Create a file named \emph{lotka.m} with the following top-level function:
+Create a file named \emph{lotka.m} with the following main function:
 
 \begin{code}
 function res = lotka()
@@ -533,7 +533,7 @@ Use \lstinline{ode45} to estimate a solution to this system of equations.
 
 \begin{enumerate}
 
-\item Create a file named \emph{lorenz.m} with a top-level function named \lstinline{lorenz} and a helper function named \lstinline{rate_func}.
+\item Create a file named \emph{lorenz.m} with a main function named \lstinline{lorenz} and a helper function named \lstinline{rate_func}.
 
 \item  The rate function should
 take \lstinline{t} and \lstinline{V} as input variables, where the components
@@ -541,7 +541,7 @@ of \lstinline{V} are understood to be the current values of \lstinline{x},
 \lstinline{y}, and \lstinline{z}.  It should compute the corresponding derivatives
 and return them in a single column vector.
 
-\item Test the function by calling it from the top-level function with values like $t=0$, $x=1$, $y=2$, and $z=3$.
+\item Test the function by calling it from the main function with values like $t=0$, $x=1$, $y=2$, and $z=3$.
 Once you get your function working, you should make it a silent function before calling \lstinline{ode45}.
 
 \item Use \lstinline{ode45} to estimate the solution for the time span $[0, 30]$

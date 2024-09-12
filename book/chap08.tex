@@ -132,7 +132,7 @@ function res = myfunc(x)
 end
 \end{code}
 
-And lo!  It turns out to work on vectors:
+And lo!  It turns out to work on vectors because the MATLAB basic functions we used in \lstinline{myfunc}, \lstinline{sin, cos, abs} all work with vectors:
 
 \begin{code}
 >> Y = myfunc(1:3)
@@ -150,7 +150,7 @@ end
 \end{code}
 
 This doesn't work on vectors because the \lstinline{^} operator
-tries to do matrix exponentiation, which only works on
+defaults to matrix operations, using linear algebra, which only works on
 square matrices.
 
 \index{matrix exponentiation}
@@ -163,7 +163,7 @@ Check that the matrix is square and the power is a scalar.
 To perform element-wise matrix powers, use '.^'.
 \end{code}
 
-But if you replace \lstinline{^} with the element-wise operator
+But convert this to use the element-wise array operation by replacing \lstinline{^} with the element-wise operator
 (\lstinline{.^}), it works!
 
 \index{element-wise operator}

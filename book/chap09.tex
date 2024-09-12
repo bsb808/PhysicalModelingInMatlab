@@ -1,7 +1,7 @@
 \chapter{Ordinary Differential Equations}
 
 
-In the previous chapter, we found the equilibrium point where a duck would float on water.  This kind of problem is called \emph{static} because it does not move.  This chapter introduces \emph{dynamic} problems, which involve things that change over time.
+In Exercise~\ref{ex:duck}, we found the equilibrium point where a duck would float on water.  This kind of problem is called \emph{static} because it does not move.  This chapter introduces \emph{dynamic} problems, which involve things that change over time.
 
 Also, you'll learn about a mathematical tool for describing physical systems, \emph{differential equations}, and two computational tools for solving them, Euler's method and \lstinline{ode45}.
 
@@ -12,22 +12,22 @@ But first I have a quick suggestion about organizing code in files.
 
 So far we've only put one function in each file.  It's also possible
 to put more than one function in a file, but only the first one, the
-\emph{top-level function}, can be called from the Command
-Window.  The other \emph{helper functions} can be called from anywhere inside the file, but not from the Command Window or any other file.
+\emph{main function}, can be called from the Command
+Window.  The other \emph{local functions} can be called from anywhere inside the file, but not from the Command Window or any other file.
 
-\index{function!top-level}
-\index{top-level function}
-\index{helper function}
-\index{function!helper}
+\index{function!main}
+\index{main function}
+\index{local function}
+\index{function!local}
 
 Keeping multiple functions in one file is convenient, but it makes  debugging
-difficult because you can't call helper functions from the Command
+difficult because you can't call local functions from the Command
 Window.
 
 To help with this problem, I often use the top-level function
-to develop and test my helper functions.  For example, to write
-a program for Section~\ref{duck}, I would create a file named
-\emph{duck.m} and start with a top-level function named \lstinline{duck}
+to develop and test my local functions.  For example, to write
+a program for Exercise~\ref{ex:duck}, I would create a file named
+\emph{duck.m} and start with a main function named \lstinline{duck}
 that takes no input variables and returns no output value.
 
 Then I would write a function named \lstinline{error_func} to
@@ -115,27 +115,28 @@ Now suppose we want to predict the yeast population in the future.  We can do th
 
 Here's a test to see if you're as smart as Leonhard Euler.  Let's say you arrive at time (~$t$) and measure the current population ($y$) and
 the rate of change ($r$).  What do you think the population will
-be after some period of time $\Delta t$ has elapsed?
+be after some period of time $\Delta t$  has elapsed?
 
 If you said $y + r \Delta t$, congratulations!  You just invented
 Euler's method.
 
 \index{Euler's method}
 
-This estimate is based on the assumption that $r$ is constant, but
-in general it's not, so we only expect the estimate to be good if
-$r$ changes slowly and $\Delta t$ is small.
+This estimate is based on the assumption that $r$ is constant, but in general it's not, so we only expect the estimate to be good if $r$ changes slowly and $\Delta t$ is small.
 
 What if we want to make a prediction when $\Delta t$ is large?
 One option is to break $\Delta t$ into smaller pieces, called
 \emph{time steps}. Then we can use the following equations to get from one time step to the next:
-\begin{eqnarray*}
-T_{i+1} &=& T_i + dt                       \\
-Y_{i+1} &=& Y_i + \frac{df}{dt}(t) \, dt
-\end{eqnarray*}
+\begin{equation}
+    \label{e:euler}
+    \begin{array}{r@{}l}
+        tt_{i+1} &{}= tt_i + dt   \\
+        yy_{i+1} &{}= yy_i + \frac{df}{dt}(t) \, dt        
+    \end{array}
+\end{equation}
 
-Here, $T_i$ is a sequence of times where we estimate the value of $y$, and $Y_i$ is the sequence of estimates.
-For each index $i$, $Y_i$ is an estimate of $y(T_i)$.
+Here, $tt_i$ is a vector of times where we estimate the value of $y$, and $yy_i$ is the vector of estimates.
+For each index $i$, $yy_i$ is an estimate of $y(tt_i)$.
 
 \index{time step}
 
@@ -150,20 +151,20 @@ too big, Euler's method is accurate enough for most purposes.
 
 \section{Implementing Euler's Method}
 
-As an example we'll use Euler's method to solve the equation from page~\pageref{diffeq},
+As an example we'll use Euler's method to solve Equation~\ref{e:euler},
 \[ \frac{dy}{dt}(t) = a y(t) \]
-with the initial condition $y(0) = 5$ billion cells and
-the growth parameter $a = 0.2$ per hour.
+with the initial condition $y(0) = \SI{5}{cells}$  and
+the growth parameter $a = \SI{0.2}{cells/hr}$.
 
-\index{top-level function}
+\index{main function}
 
-As a first step, create a file named \emph{euler.m} with a top-level function and a helper function:
+As a first step, create a file named \emph{euler.m} with a main function and a local function:
 
 \begin{code}
 function res = euler()
-    T(1) = 0;
-    Y(1) = 5;
-    r = rate_func(T(1), Y(1))
+    tt(1) = 0;
+    yy(1) = 5;
+    r = rate_func(tt(1), yy(1))
 end
 
 function res = rate_func(t, y)
@@ -179,54 +180,42 @@ In \lstinline{euler} we initialize the initial conditions and then call \lstinli
 
 After testing these functions, we can add code to \lstinline{euler} to compute these difference equations:
 \begin{eqnarray*}
-T_{i+1} &=& T_i + \Delta t             \\
-Y_{i+1} &=& Y_i + r \Delta t
+tt_{i+1} &=&tt_i + \Delta t             \\
+yy_{i+1} &=& yy_i + r \Delta t
 \end{eqnarray*}
 %
 where $r$ is the rate of growth computed by \lstinline{rate_func}.
 Listing~\ref{lst:euler_method} has the code we need:
 
-\begin{lstlisting}[caption={A function implementing Euler's method}, label={lst:euler_method}]
-function res = euler()
-    T(1) = 0;
-    Y(1) = 5;
-    dt = 0.1;
+\lstinputlisting[style=mcode, caption={A function implementing Euler's method}, label={lst:euler_method}]{../code/chap09/euler.m}
 
-    for i=1:40
-        r = rate_func(T(i), Y(i));
-        T(i+1) = T(i) + dt;
-        Y(i+1) = Y(i) + r * dt;
-    end
-    plot(T, Y)
-end
-\end{lstlisting}
+Before the loop, we create two vectors, \lstinline{tt} and \lstinline{yy}, and set the first element of each with the initial conditions;  \lstinline{dt}, which is the size of the time steps, is \SI{0.1}{hours}.
 
-Before the loop, we create two vectors, \lstinline{T} and \lstinline{Y}, and set the first element of each with the initial conditions;  \lstinline{dt}, which is the size of the time steps, is 0.1~hours.
+Inside the loop, we compute the growth rate based on the current time, \lstinline{tt(i)}, and population, \lstinline{tt(i)}.  You might notice that the rate depends only on population, but we pass time as an input variable anyway, for reasons you'll see soon.
 
-Inside the loop, we compute the growth rate based on the current time, \lstinline{T(i)}, and population, \lstinline{Y(i)}.  You might notice that the rate depends only on population, but we pass time as an input variable anyway, for reasons you'll see soon.
-
-After computing the growth rate, we add an element both \lstinline{T} and \lstinline{Y}.  Then, when the loop exits, we plot \lstinline{Y} as a function of \lstinline{T}.
+After computing the growth rate, we add an element both \lstinline{tt} and \lstinline{yy}, incrasing their length by one.  Then, when the loop exits, we plot \lstinline{yy} as a function of \lstinline{tt}, adding labels and units as good engineering practice.
 
 If you run the code, you should get a plot of population over time, as shown in Figure~\ref{fig:euler}.
 
-\begin{figure}[ht]
-\centerline{\includegraphics[scale=0.8]{images/figure09_01_new.eps}}
+\begin{figure}[ht!]
+\centerline{\includegraphics[width=0.7\textwidth]{images/euler.png}}
 \caption{Solution to a simple differential equation by Euler's method}
 \label{fig:euler}
 \end{figure}
 
-As you can see, the population doubles in a little less than 4 hours.
+As you can see, the population doubles in a little less than 4 hours.  (You may recall for differential equations that for a linear, first-order system, the doubling time is $t_d = \ln(2)/r  = \ln(2)/0.2 = \SI{3.5}{s}$.)
 
+\clearpage
 
 \section{Solving ODEs with ode45}
 \label{ode45}
 
-A limitation of Euler's method is that it assumes that the derivative is constant between time steps, and that's not generally true.  Fortunately, there are better methods that estimate the derivative between time steps, and  they are much more accurate.
+A limitation of Euler's method is that it assumes that the derivative is constant between time steps, and that's not generally true.  Fortunately, there are better methods that estimate the derivative between time steps, and  they can be much more accurate.
 
 \index{time step}
 \index{ode45@\lstinline{ode45}}
 
-MATLAB provides a function called \lstinline{ode45} that implements one of these methods.  In this section I'll explain how to use it; you can read more about how it works in ``\nameref{howode45}'' on page~\pageref{howode45}.
+MATLAB provides a function called \lstinline{ode45} that implements one of these methods.  In this section I'll explain how to use it; you can read more about how it works in Section~\ref{s:howode45} on page~\pageref{s:howode45}.
 
 \index{rate function}
 \index{function!rate}
@@ -248,21 +237,16 @@ We can call \lstinline{ode45} from the Command Window like this:
 plot(T, Y)
 \end{code}
 
-The first argument is a function handle, as we saw in Chapter~\ref{fzero}.  The second argument is the time interval where we want to evaluate the solution; in this case the interval is from $t=0$ to $t=4$ hours.  The third argument is the initial population, 5 billion cells.
+The first argument is a function handle, as we saw in Chapter~\ref{fzero}.  The second argument is the time interval where we want to evaluate the solution; in this case the interval is from $t=0$ to $t=4$ hours.  The third argument is the initial population, 5 cells.  The result is two vectors, a vector of time values for the solution and a vector of the same lenth with the solution.
 
 \index{function handle}
 \index{handle!function}
 \index{output variable}
 \index{variable!output}
 
-The \lstinline{ode45} function is the first function we've seen that returns \emph{two} output variables.
-In order to store them, we have to assign them to two variables, \lstinline{T} and \lstinline{Y}. Figure~\ref{fig:runge} shows the results.
+The full example, as a live script, is as follows:
+\includepdf[pages=-,frame,pagecommand={},width=\textwidth]{../code/chap09/euler_compare.pdf}
 
-\begin{figure}[ht]
-\centerline{\includegraphics[scale=0.8]{images/figure09_02_new.eps}}
-\caption{Solutions to a simple differential equation using Euler's method and \lstinline{ode45}}
-\label{fig:runge}
-\end{figure}
 
 The solid line is the estimate we computed with Euler's method; the dashed line is the solution from \lstinline{ode45}.
 
@@ -271,7 +255,7 @@ For the first 2--3 hours, the two solutions are visually indistinguishable.  Dur
 For many purposes, the difference between Euler's method and \lstinline{ode45} is the least of our worries.  In this example, we probably don't know the initial population with perfect accuracy or the growth constant, \lstinline{a}.  Also, the assumption that the growth rate only depends on population is probably not true.  Any of these modeling errors could be bigger than 1 percent.
 
 However, for some problems, Euler's method can be off by a lot more than 1 percent.
-In those cases \lstinline{ode45} is almost always more accurate, for two reasons: first, it computes the rate function several times per time step; second, if the time step is too big, \lstinline{ode45} can detect the problem and shrink the time step.  For more details, see ``\nameref{howode45}'' on page~\pageref{howode45}.
+In those cases \lstinline{ode45} is almost always more accurate, for two reasons: first, it computes the rate function several times per time step; second, if the time step is too big, \lstinline{ode45} can detect the problem and shrink the time step.  For more details, see ``\nameref{s:howode45}'' on page~\pageref{s:howode45}.
 
 
 \section{Time Dependence}
@@ -300,38 +284,39 @@ In this example, $a$ characterizes the reproductive rate per day, and
 $\omega$ is the frequency of a periodic function that describes
 the effect of varying food supply on reproduction.
 
-We'll use the values $a = 0.002$
-and $\omega = 2 \pi/365$ (one cycle per year).
+We'll use the values $a = \SI{0.002}{day^{-1}}$
+and $\omega = \SI{2 \pi/365}{rad/day}$ (one cycle per year).
 The growth rate is lowest at $t=0$, on January~1, and highest at $t=365/2$, on June~30.
 
 Now we can write a function that evaluates the growth rate:
 
 \begin{code}
-function res = rate_func(t, y)
+function res = rate_func(t, rats)
+    %RATE_FUNC returns the growth rate at time (t) for population (rats)
     a = 0.002;
     omega = 2*pi / 365;
-    res = a * y * (1 - cos(omega * t));
+    res = a * rats * (1 - cos(omega * t));
 end
 \end{code}
 
-To test this function, I put it in a file called \emph{rats.m} with a top-level function called
+To test this function, I put it in a file called \emph{rats.m} with a main function called
 \lstinline{rats}:
 
 \begin{code}
-function res = rats()
+function res = rats_growth()
     t = 365/2;
-    y = 1000;
-    res = rate_func(t, y);
+    rats = 1000;
+    res = rate_func(t, rats);
 end
 \end{code}
 
-The top-level function assumes, for purposes of testing, that
+The main function assumes, for purposes of testing, that
 there are 1000 rats at $t=365/2$ (June~30) and computes the growth rate under those conditions.
 
-We can run the top-level function like this:
+We can run the main function like this:
 
 \begin{code}
->> r = rats
+>> r = rat_growth()
 
 r = 4
 \end{code}
@@ -339,11 +324,11 @@ r = 4
 Under these conditions, the growth rate is 4 new rats per day.
 
 Now that we've tested \lstinline{rate_func}, we can use \lstinline{ode45} to solve the differential equation.
-Here's how to call it from the top-level function in \emph{rats.m}:
+Here's how to call it from the main function in \emph{rats.m}:
 
 \begin{code}
-[T, Y] = ode45(@rate_func, [0, 365], 1000)
-plot(T, Y)
+[tt, yy]] = ode45(@rate_func, [0, 365], 1000)
+plot(tt, yy)
 \end{code}
 
 The first argument is a function handle, again.  The second argument is the interval we are interested in, a duration of one year, expressed in units of days.
@@ -351,20 +336,23 @@ The third argument is the initial population, $y(0) = 1000$.
 
 \index{interval}
 
+We can put this all together in the following program:
+\lstinputlisting[style=mcode]{../code/chap09/rat_growth.m}
+
 Figure~\ref{fig:rats} shows the results.
 
 \begin{figure}[ht]
-\centerline{\includegraphics[scale=0.8]{images/figure09_03_new.eps}}
+\centerline{\includegraphics[width=0.7\textwidth]{../code/chap09/rats.png}}
 \caption{Solutions to a simple differential equation by Euler's method and \lstinline{ode45}}
 \label{fig:rats}
 \end{figure}
 
 The population grows slowly during the winter, quickly during the summer, and then slowly again in the fall.
 
-To see the population at the end of the year, you can display the last element of \lstinline{Y}:
+To see the population at the end of the year, you can display the last element of \lstinline{rats}:
 
 \begin{code}
-Y(end)
+rats(end)
 2.0751e+03
 \end{code}
 
@@ -500,6 +488,102 @@ The first argument is the figure we want to save; \lstinline{gcf} is a MATLAB co
 \index{gcf@\lstinline{gcf}}
 \index{saveas@\lstinline{saveas}}
 
+
+\section{How ode45 Works}
+\label{s:howode45}
+
+According to the MATLAB documentation, \lstinline{ode45} uses ``an explicit Runge-Kutta formula, the Dormand-Prince pair.''  You can read about it at  \url{https://greenteapress.com/matlab/runge}, but I'll give you a sense of it here.
+
+\index{Runge-Kutta}
+\index{ode45@\lstinline{ode45}}
+\index{Dormand-Prince}
+
+The key idea behind all Runge-Kutta methods is to evaluate the rate function several times at each time step and use a weighted average of the computed slopes to estimate the value at the next time step.
+Different methods evaluate the rate function in different places and compute the average with different weights.
+
+\index{differential equation}
+\index{rate function}
+\index{function!rate}
+
+As an example, we'll solve the following differential equation:
+
+\[ \frac{dy}{dt}(t) = y \sin t \]
+
+Given a differential equation, it's usually straightforward to write a rate function:
+
+\begin{code}
+function res = rate_func(t, y)
+    dydt = y * sin(t);
+    res = dydt;
+end
+\end{code}
+
+And we can use it like this:
+
+\begin{code}
+    y0 = 1;
+    tspan=[0 4];
+    options = odeset('Refine', 1);
+    [T, Y] = ode45(@rate_func, tspan, y0, options);
+\end{code}
+
+For this example we'll use \lstinline{odeset} to set the \lstinline{Refine} option to \lstinline{1}, which tells \lstinline{ode45} to return only the time steps it computes, rather than interpolating between them.
+
+\index{odeset@\lstinline{odeset}}
+
+Now we can modify the rate function to plot the places where it gets evaluated:
+
+\begin{code}
+function res = rate_func(t, y)
+    dydt = y * sin(t);
+    res = dydt;
+
+    plot(t, y, 'ro')
+    dt = 0.01;
+    ts = [t t+dt];
+    ys = [y y+dydt*dt];
+    plot(ts, ys, 'r-')
+end
+\end{code}
+
+When \lstinline{rate_func} runs, it plots a red circle at each location and a short red line showing the computed slope.
+
+\index{time step}
+
+Figure~\ref{fig:odeplot1} shows the result;  \lstinline{ode45} computes 10 time steps (not counting the initial condition) and evaluates the rate function 61 times.
+
+\begin{figure}[h]
+\centerline{\includegraphics[scale=0.8]{images/figure15_01_new.eps}}
+\caption{Points where \lstinline{ode45} evaluates the rate function}
+\label{fig:odeplot1}
+\end{figure}
+
+Figure~\ref{fig:odeplot2} shows the same plot, zoomed in on a single time step.
+The dark squares at $0.8$ to $1.2$ show the values that were returned as part of the solution.
+The circles show the places where the rate function was evaluated.
+
+\begin{figure}[h]
+\centerline{\includegraphics[scale=0.8]{images/figure15_02_new.eps}}
+\caption{Points where \lstinline{ode45} evaluates the rate function, zoomed in}
+\label{fig:odeplot2}
+\end{figure}
+
+We can see that \lstinline{ode45} evaluates the rate function several times per time step, at several places between the end points.
+We can also see that most of the places where \lstinline{ode45} evaluates the rate function are not part of the solution it returns, and they are not always good estimates of the solution.
+This is good to know when you are writing a rate function; you should not assume that the time and state you get as input variables will be part of the solution.
+
+In a sense, the rate function is answering a hypothetical question: ``\emph{If} the state at a particular time has these particular values, what \emph{would} the slope~be?''
+
+
+At each time step, \lstinline{ode45} actually computes \emph{two} estimates of the next value.
+By comparing them, it can estimate the magnitude of the error,  which it uses to adjust the time step.
+If the error is too big, it uses a smaller time step; if the error is small enough, it uses a bigger time step.
+Because \lstinline{ode45} is \emph{adaptive} in this way, it minimizes the number of times it calls the rate function to achieve a given level of accuracy.
+
+\index{adaptive}
+
+
+
 \section{Chapter Review}
 
 This chapter introduced \emph{differential equations (DE)}, which are equations that describe the
@@ -514,7 +598,7 @@ When we solve a differential equation numerically, the \emph{time step} is the i
 A \emph{parameter} is a value that appears in a model to quantify some
 physical aspect of the scenario being modeled.
 
-Until now we have only put one function in each M-file, but in this chapter we wrote a \emph{top-level function}, which is the first function in an M-file, and a \emph{helper function}, which is any function in an M-file that is not the top-level function.
+Until now we have only put one function in each M-file, but in this chapter we wrote a \emph{main function}, which is the first function in an M-file, and a \emph{local function}, which is any function in an M-file that is not the main function.
 
 In the next chapter, we'll solve \emph{systems} of ODEs, which are used to describe physical systems with multiple parts that interact.
 But first, here's an exercise where you can apply what you've learned so far.
