@@ -212,7 +212,14 @@ When you ask for \lstinline{help}, MATLAB prints the comment you provide.
 \end{lstlisting}
 
 There are lots of conventions about what should be included
-in these comments.  Among other things, it's a good idea to
+in these comments.  Looking at some of examples of documentation for MATLAB's included functions can be a productive way to understand the style and convention used in documenting functions.  You can open code a MATLAB function in and Editor window (read-only) to better see the raw text.  For example,
+\begin{code}
+    >> edit mean
+\end{code}
+will open the \emph{mean.m} function file.
+
+
+Among other things, it's a good idea to
 include the following:
 
 \begin{description}
@@ -230,17 +237,11 @@ comments inside the function that explain the details.
 in this case it is important to note that \lstinline{x} is considered
 to be an angle in radians.
 
-\item [Examples] Any preconditions and postconditions.
+\item [Examples] Working examples of how you would use the function.  Often functions can be called in different ways, so providing examples of the applicable use cases helps convey the intended implementations.
 
-\item [See Also]
+\item [See Also] If there are related functions, listing them can be really helpful for future users, including yourself.  For example the \lstinline{mean} function lists \lstinline{median, median, std, min, max, var, cov, mode}---all related summary statistics.
 
 \end{description}
-
-Looking at some of examples of documentation for MATLAB's included functions can be a productive way to understand the style and convention used in documenting functions.  You can open code a MATLAB function in and Editor window (read-only) to better see the raw text.  For example,
-\begin{code}
-    >> edit mean
-\end{code}
-will open the \emph{mean.m} function file.
 
 \index{precondition}
 \index{postcondition}
