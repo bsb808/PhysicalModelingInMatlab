@@ -371,7 +371,7 @@ Don't forget the \lstinline{@} on the function handle.
 If you leave it out, like:
 
 \begin{code}
-[T, Y] = ode45(rate_func, [0, 365], 1000)
+[tt, yy] = ode45(rate_func, [0, 365], 1000)
 \end{code}
 MATLAB treats the first argument as a function
 call and calls \lstinline{rate_func} without providing arguments.
@@ -387,7 +387,7 @@ Error in rats>rate_func (line 18)
     res = a * y * (1 - cos(omega * t));
 
 Error in rats (line 6)
-    [T, Y] = ode45(rate_func, [0, 365], 1000);
+    [tt, yy] = ode45(rate_func, [0, 365], 1000);
 \end{code}
 
 Also, the rate function you write has to take two input variables,
@@ -478,10 +478,10 @@ legend('euler', 'ode45', 'Location', 'northwest')
 Finally,  save the figures using \lstinline{saveas}:
 
 \begin{code}
-saveas(gcf, 'runge.eps', 'epsc')
+saveas(gcf,'test.png','png')
 \end{code}
 
-The first argument is the figure we want to save; \lstinline{gcf} is a MATLAB command that stands for ``get current figure,'' which is the figure we just drew.  The second argument is the filename.  The extension specifies the format we want, which is Encapsulated PostScript (\emph{.eps}).  The third argument tells MATLAB what driver to use.  The details aren't important, but \lstinline{epsc} generates figures in color.
+The first argument is the figure we want to save; \lstinline{gcf} is a MATLAB command that stands for ``get current figure,'' which is the figure we just drew.  The second argument is the filename.  The extension specifies the format we want, which is a PNG (\emph{.png}) image file.  The third argument tells MATLAB what driver to use.  The details aren't important, but \lstinline{'png'} generates figures as color images.
 
 \index{figure}
 \index{get current figure}

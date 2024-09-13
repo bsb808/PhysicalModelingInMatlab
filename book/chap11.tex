@@ -48,6 +48,33 @@ as a system of first-order ODEs:
 The first equation says that the first derivative of $r$ is $v$;
 the second equation says that the first derivative of $v$ is $a$.
 
+Another way to present this model is to put it into \emph{state space} from.  The standard form for the state equation is
+\begin{equation}
+    \dot{\mathbf{x}}(t) = A \mathbf{x}(t) + B \mathbf{u}(t) 
+\end{equation}
+where $\mathbf{x}(t)$ is the state vector of the system, $\mathbf{u}(t)$ is the input vector to the system, $A$ is the state transition matrix and $B$ is the input matrix.  We've used the notation convention hwere scalar variables are in in regular font (e.g., $t$), vectors are in bold font (e.g., $\mathbf{x}$) and matrices are capitalized (e.g., $A$).  To get our system of equations into state space form we can define the state vector as a column vector with elements of position ($r(t)$) and velocity ($v(t)$).
+
+\begin{equation}
+\left\lbrace
+\begin{array}{c}
+    \dot{r}(t) \\
+    \dot{v}(t)
+\end{array}
+\right\rbrace
+=
+\left[ \begin{array}{cc}
+0 & 1 \\
+0 & 0 
+\end{array} \right]
+\left\{ \begin{array}{c}
+    r(t) \\ v(t)
+\end{array} \right\}
++ 
+\left[ \begin{array}{c}
+    0 \\ 1
+\end{array} \right]
+\left\{ a \right\}
+\end{equation}
 
 \section{Free Fall}
 \label{freefall}
@@ -64,8 +91,8 @@ We'll start with no air resistance; then we'll add air resistance to the model a
 \index{gravity}
 
 Near the surface of the earth,
-acceleration due to gravity is \SI{-9.8}{\meter \per \second \squared}, where the minus sign
-indicates that gravity pulls down.
+acceleration due to gravity is \SI{-9.81}{\meter \per \second \squared}, where the minus sign
+indicates that gravity pulls down, so $a=\SI{-9.81}{m/s^2}$.
 If the object falls straight down, we can describe its position with a
 scalar value $y$, representing altitude.
 
@@ -76,41 +103,31 @@ Listing~\ref{lst:penny_rate_func} contains a rate function we can use with \lsti
 this problem:
 
 \begin{lstlisting}[caption={A rate function for the falling penny problem}, label={lst:penny_rate_func}]
-function res = rate_func(t, X)
-    % unpack position and velocity
-    y = X(1);
-    v = X(2);
-
-    % compute the derivatives
-    dydt = v;
-    dvdt = -9.8;
-
-    % pack the derivatives into a column vector
-    res = [dydt; dvdt];
+function xx_dot = rate_func(t, xx)
+    % Rate function using state space format
+    A = [0, 1; 0, 0];
+    B = [0; 1];
+    uu = -9.81;
+    
+    xx_dot = A*xx+B*uu;
 end
 \end{lstlisting}
 
-The rate function in Listing~\ref{lst:penny_rate_func} takes \lstinline{t} and \lstinline{X} as input variables, where the elements of \lstinline{X} are understood to be the position and velocity of the penny.
+The rate function in Listing~\ref{lst:penny_rate_func} takes scalar \lstinline{t} and column vector \lstinline{xx} as input variables, where the elements of \lstinline{xx} are understood to be the position and velocity of the penny.
 
-It returns a column vector that contains \lstinline{dydt} and \lstinline{dvdt}, which
-are velocity and acceleration, respectively.
-Since velocity is the second element of \lstinline{X}, we can simply assign this value to \lstinline{dydt}.
-And since the derivative of velocity is acceleration, we can assign the acceleration due to gravity to \lstinline{dvdt}.
-
-\index{column vector}
-\index{acceleration}
+It returns a column vector that contains which are velocity and acceleration, respectively.
 
 As always, we should test the rate function before we call \lstinline{ode45}.  Here's the top-level function we can use to test it:
 
 \begin{code}
-function penny()
-   t = 0;
-   X = [381, 0];
-   rate_func(t, X)
-end
+% Initial conditions as state vector: position and velocity
+xx_init = [381; 0];
+
+% Test the rate function
+rate_func(0, xx_init)
 \end{code}
 
-The initial condition of \lstinline{X} is the initial position, which is the height of the Empire State Building, about \SI{381}{\meter}, and the initial velocity, which is \SI{0}{\meter \per \second}.
+The initial condition of \lstinline{xx} is the initial position, which is the height of the Empire State Building, about \SI{381}{\meter}, and the initial velocity, which is \SI{0}{\meter \per \second}.
 
 \index{Empire State Building}
 \index{penny}
@@ -127,14 +144,12 @@ Now we can run \lstinline{ode45} with this rate function:
 
 \begin{code}
 tspan = [0, 10]
-[T, M] = ode45(@rate_func, tspan, X)
+[tout, Xout] = ode45(@rate_func, tspan, xx_init);
 \end{code}
 
-As always, the first argument is the function handle, the second
-is the time span (10 seconds), and the third is the initial
-condition.
+As always, the first argument is the function handle, the second is the time span (10 seconds), and the third is the initial condition.
 
-The result is a vector, \lstinline{T}, that contains the time values, and a matrix, \lstinline{M}, that contains two columns, one for altitude and one for velocity.
+The result is a vector, \lstinline{tout}, that contains the time values, and a matrix, \lstinline{Xout}, that contains two columns, one for altitude and one for velocity.
 \index{function handle}
 \index{time span}
 \index{matrix}
@@ -142,13 +157,15 @@ The result is a vector, \lstinline{T}, that contains the time values, and a matr
 We can extract the first column and plot it, like this:
 
 \begin{code}
-Y = M(:, 1)
+Y = Xout(:, 1)
 plot(T, Y)
 \end{code}
 
+Here is the full listing\dots
+\lstinputlisting[style=mcode]{../code/chap11/penny1.m}
 
 \begin{figure}
-\centerline{\includegraphics[scale=0.8]{images/figure11_01_new.eps}}
+\centerline{\includegraphics[width=0.7\textwidth]{../code/chap11/penny1.png}}
 \caption{Altitude versus time for an object in free fall}
 \label{fig:penny}
 \end{figure}
@@ -174,18 +191,18 @@ Here are the steps:
 
 \begin{enumerate}
 
-\item First we define an \emph{event function} that allows \lstinline{ode45} to figure out when
+\item First we define an \href{https://www.mathworks.com/help/matlab/math/ode-event-location.html}{\emph{event function}} that allows \lstinline{ode45} to figure out when
 an event occurs.  Here's an event function for the penny example:
 
 \begin{code}
-function [value, isterminal, direction] = event_func(t,X)
-    value = X(1);
+function [value, isterminal, direction] = event_func(t,xx)
+    value = xx(1);
     isterminal = 1;
     direction = -1;
 end
 \end{code}
 
-The event function takes the same input variables as the rate function and returns three output variables: \lstinline{value} determines when an event can occur, \lstinline{direction} determines whether it does, and \lstinline{isterminal} determines what happens.
+The event function takes the same input variables as the rate function and returns three output variables: \lstinline{value} is zero when an event can occur, \lstinline{direction} can be 0 to allow all events, +1 for the event to occur only when the event function is increasing, and \lstinline{isterminal} is 1 if the integration should terminate and 0 otherwise. 
 More specifically, an event can occur when \lstinline{value} passes through 0.
 If \lstinline{direction} is positive, the event only occurs if \lstinline{value} is increasing.
  If \lstinline{direction} is negative, the event only occurs if \lstinline{value} is decreasing.
@@ -210,7 +227,7 @@ The name of the option is \lstinline{Events} and the value is the handle of the 
 \item Finally, we pass \lstinline{options} as a fourth argument to \lstinline{ode45}:
 
 \begin{code}
-[T, M] = ode45(@rate_func, tspan, X, options);
+[tout, Xout] = ode45(@rate_func, tspan, xx_init, options);
 \end{code}
 
 When \lstinline{ode45} runs, it invokes \lstinline{event_func} after each time step.  If the event function indicates that a terminal event occurred,
@@ -221,16 +238,18 @@ When \lstinline{ode45} runs, it invokes \lstinline{event_func} after each time s
 Let's look at the results from the penny example:
 
 \begin{code}
->> T(end)
-8.8179
-
->> M(end, :)
-0.0000  -86.4153
+    >> tout(end)
+    ans =
+    8.8134
+    
+    >> Xout(end,:)
+    ans =
+             0  -86.4594
 \end{code}
 
-The last value of \lstinline{T} is about 8.8, which is the number of seconds the penny takes to reach the sidewalk.
+The last value of \lstinline{tt} is about 8.8, which is the number of seconds the penny takes to reach the sidewalk.
 
-The last row of \lstinline{M} indicates that the final altitude is 0, which is what we wanted, and the final velocity is about \SI{-86}{\meter \per \second}.
+The last row of \lstinline{Xout} indicates that the final altitude is 0, which is what we wanted, and the final velocity is about \SI{-86}{\meter \per \second}.
 
 
 \section{Air Resistance}
@@ -240,7 +259,7 @@ The last row of \lstinline{M} indicates that the final altitude is 0, which is w
 \index{air resistance}
 
 To make this simulation more realistic, we can add air resistance.
-For large objects moving quickly through air, the force due to air resistance, called \emph{drag}, is proportional to velocity squared.
+For large objects moving quickly through air, the force due to air resistance, \emph{drag}, is proportional to velocity squared.
 For an object falling down, drag is
 directed up, so if velocity is negative, drag force is positive.
 
@@ -270,22 +289,28 @@ To convert from force to acceleration we have to know mass, but that's easy to f
 Listing~\ref{lst:acceleration_drag} defines a function that takes \lstinline{t} and \lstinline{X} as input variables and returns the total acceleration of the penny due to gravity and drag:
 
 \begin{lstlisting}[caption={Calculating acceleration of a penny with drag}, label={lst:acceleration_drag}]
-function res = acceleration(t, X)
-    b = 75e-6;                 % drag constant in kg/m
-    v = X(2);                  % velocity in m/s
-    f_d = -sign(v) * b * v^2;  % drag force in N
-
-    m = 2.5e-3;               % mass in kg
-    a_d = f_d / m;            % drag acceleration in m/s^2
-
-    a_g = -9.8;               % acceleration of gravity in m/s^2
-    res = a_g + a_d;          % total acceleration
+function accel = acceleration(t, xx)
+    % Return total acceleration due to gravity and drag.
+    
+    % Drag constant in kg/m
+    b = 75e-6; 
+    % Velocity from state, in m/s
+    v = xx(2);
+    % Drag force in N    
+    f_d = -sign(v) * b * v^2;
+    % Mass in kg
+    m = 2.5e-3;
+    % Drag acceleration in m/s^2
+    a_d = f_d / m;
+    % Gravity
+    a_g = -9.8;
+    % Return total drag
+    accel = a_g + a_d;
 end
 \end{lstlisting}
 
-First, we compute force due to drag .
-Then we compute acceleration due to drag .
-Lastly, we compute total acceleration due to drag and \mbox{gravity}.
+First, we compute force due to drag. Then we compute acceleration due to drag .
+Lastly, we compute total acceleration due to drag and gravity.
 
 \index{acceleration}
 \index{force}
@@ -298,23 +323,22 @@ That helps me avoid errors like adding forces to accelerations.
 To use this function, we make a small change in \lstinline{rate_func}:
 
 \begin{code}
-function res = rate_func(t, X)
-    y = X(1);
-    v = X(2);
-
-    dydt = v;
-    dvdt = acceleration(t, X);   % this line has changed
-
-    res = [dydt; dvdt];
+function xx_dot = rate_func(t, xx)
+    % Rate function using state space format
+    A = [0, 1; 0, 0];
+    B = [0; 1];
+    % Intput is total acceleration - this line has changed!
+    uu = acceleration(t, xx);
+    
+    xx_dot = A*xx+B*uu;
 end
-
 \end{code}
 
-In the previous version, \lstinline{dvdt} is always \lstinline{-9.8}, the acceleration due to gravity.
+In the previous version, acceleration is always \lstinline{-9.8}, the acceleration due to gravity.
 In this version, we call \lstinline{acceleration} to compute the total acceleration due to gravity and drag .
 
 \begin{figure}[ht]
-\centerline{\includegraphics[scale=0.8]{images/figure11_02_new.eps}}
+\centerline{\includegraphics[width=0.7\textwidth]{../code/chap11/penny_event_drag.png}}
 \caption{Altitude versus time for a penny in free fall with air resistance}
 \label{fig:penny2}
 \end{figure}
@@ -327,6 +351,9 @@ acceleration due to drag equals acceleration due to gravity; after that, velocit
 With air resistance, the time until the penny hits the sidewalk is \SI{22.4}{\second}, substantially longer than before (\SI{8.8}{\second}).
 
 And the final velocity is \SI{18.1}{\meter \per \second}, substantially slower than before (\SI{86}{\meter \per \second}).
+
+Here is the full script\dots
+\lstinputlisting[style=mcode]{../code/chap11/penny_event_drag.m}
 
 \section{Chapter Review}
 

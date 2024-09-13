@@ -11,22 +11,22 @@ function res = lotka()
     [T, M] = ode45(@rate_func, tspan, V_init);
     
     % plot the time series
-    clf; hold on
+    figure(1); clf; hold on
     R = M(:, 1);
     F = M(:, 2);
     plot(T, R, 'LineWidth', 2)
     plot(T, F, '--', 'LineWidth', 2)
     xlabel('Time (weeks)')
-    ylabel('Polulation')
+    ylabel('Polulation [animals]')
     legend('rabbits', 'foxes')
-    saveas(gcf, '../../book/figs/lotka.eps', 'epsc')
+    %saveas(gcf, '../../book/figs/lotka.eps', 'epsc')
 
     % plot the trajectory
-    clf; hold on
+    figure(2); clf; hold on
     plot(R, F)
-    xlabel('Rabbit population')
-    ylabel('Fox population')
-    saveas(gcf, '../../book/figs/phase.eps', 'epsc')
+    xlabel('Rabbit population [rabbits]')
+    ylabel('Fox population [foxes]')
+    %saveas(gcf, '../../book/figs/phase.eps', 'epsc')
 end
 
 
