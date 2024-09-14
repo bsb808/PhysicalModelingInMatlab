@@ -2,7 +2,7 @@
 \label{systems}
 
 
-In the previous chapter we used Euler's method and \lstinline{ode45} to solve a single first-order differential equation.  In this chapter, we'll move on to systems of ODEs and implement a model of a predator-prey system.  But first, we have to learn more about matrices.
+In the previous chapter we used Euler's method and \lstinline{ode45} to solve a single first-order differential equation.  In this chapter, we'll move on to systems of first-order ODEs and implement a model of a predator-prey system.  But first, we have to learn more about matrices.
 
 
 \section{Matrices}
@@ -209,6 +209,12 @@ have on row vectors, column vectors, and numbers?
 
 Now that we've seen the basics of matrices, let's see how we can use them to solve systems of differential equations.
 
+A generic form for a system of first-order, non-linear ODEs is the non-linear \emph{state-space} equation typically wrtiten as
+\begin{equation} \label{e:nonlinearstatespace}
+\dot{\mathbf{x}}(t) = \mathbf{f}(\mathbf{x}(t), \mathbf{u}(t))
+\end{equation}
+where \( \mathbf{x}(t) \) is the state vector, \( \mathbf{f} \) is a non-linear function of the state vector and \( \mathbf{u}(t) \) is the input vector.  We've used the notation convention hwere scalar variables are in in regular font (e.g., $t$), vectors are in bold font (e.g., $\mathbf{x}$) and matrices are capitalized (e.g., $A$).  If we can get our problem into this form, we can then apply a variety of MATLAB numerical tools to solve the system of equations.
+
 \subsection{Lotka-Volterra}
 \label{lotka}
 
@@ -220,7 +226,7 @@ species in an ecosystem, a predator and its prey.  As an example, we'll consider
 \index{fox}
 \index{system!of ODEs}
 
-The model is governed by the following system of differential equations:
+The model is governed by the following system of system of first-order, non-linear differential equations:
 
 \begin{eqnarray*}
     \frac{dx}{dt} &=& a x - b x y         \\
@@ -231,6 +237,25 @@ where $x$ and $y$ are the populations of rabbits and foxes,
 and $a$, $b$, $c$, and $d$ are parameters
 that quantify the interactions between the two species (see
 \url{https://greenteapress.com/matlab/lotka}).
+
+We can put this model into the state-space form of Equation~\ref{e:nonlinearstatespace}.  The first step is to define the state as the vector of rabbits and foxes,
+\begin{equation*}
+\dot{\mathbf{x}}(t)  = \left\{ \begin{array}{c}
+     x(t) \\
+     y(t)
+\end{array}\right\}.
+\end{equation*}
+Using this state, the right side of our model is only a function of those state values---there is no external input.  So there is no input vector $\mathbf{u}(t)$.  So in standard state-space form our model is
+\begin{equation*}
+     \left\{ \begin{array}{c}
+          \dot{x}(t) \\
+          \dot{y}(t)
+     \end{array}\right\} = 
+     \left[  \begin{array}{c}
+          ax - bxy \\
+          -cy + dxy
+     \end{array}\right].
+     \end{equation*}
 
 At first glance, you might think you could solve these equations by
 calling \lstinline{ode45} once to solve for $x$ and

@@ -43,9 +43,6 @@ Here's an example where the result is false:
 ans = logical 0
 \end{code}
 
-You 
-
-
 It's a common error to use the assignment operator (\lstinline{=}) instead of the equality operator (\lstinline{==}).  If you do, you get an error:
 
 \begin{code}
@@ -461,14 +458,14 @@ the resulting values, in order, to the input variables (which
 live in the \emph{new} workspace).
 
 \item The body of the code executes.  Somewhere in the body
-a value gets assigned to the output variable.
+a value gets assigned to the output variable(s).
 
 \item The function's workspace is destroyed; the only thing
-that remains is the value of the output variable and any side
+that remains is the value of the output variable(s) and any side
 effects the function had (like displaying values).
 
-\item The program resumes from where it left off.  The value
-of the function call is the value of the output variable.
+\item The program resumes from where it left off.  The value(s)
+of the function call is the value(s) of the output variable(s).
 
 \end{enumerate}
 

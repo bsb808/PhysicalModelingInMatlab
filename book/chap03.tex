@@ -67,8 +67,7 @@ In this case, removing redundancy also eliminates the opportunity for  a bug.
 
 \section{Bug Taxonomy}
 
-The more you understand bugs, the better you will be at debugging.
-There are four kinds of bugs:
+The more you understand bugs, the better you will be at debugging. Here are a few common types of bus:
 
 \index{syntax error}
 \index{runtime error}
@@ -77,50 +76,29 @@ There are four kinds of bugs:
 
 \begin{description}
 
-\item[Syntax error] You have written a command that cannot
-execute because it violates one of the language's syntax rules.  For example, in MATLAB,
-you can't have two operands in a row without an operator, so
-\lstinline{pi r^2} contains a syntax error.  When the interpreter finds a syntax
-error, it prints an error message and stops running your program.\index{error!syntax}
+\item[Syntax error] You have written a command that cannot execute because it violates one of the language's syntax rules.  For example, in MATLAB, you can't have two operands in a row without an operator, so \lstinline{pi r^2} contains a syntax error, or you could forget the closing parenthesis.  When the interpreter finds a syntax error, it prints an error message and stops running your program.\index{error!syntax}
 
-\item[Runtime error] Your program starts running, but something goes
-wrong along the way.  For example, if you try to access a variable
-that doesn't exist, that's a runtime error.  When the interpreter detects the
-problem, it prints an error message and stops.\index{error!runtime}
+\item[Runtime error] Your program starts running, but something goes wrong along the way.  For example, if you try to access a variable that doesn't exist, that's a runtime error.  Division by zero is another example.  When the interpreter detects the problem, it prints an error message and stops.\index{error!runtime}
 
-\item[Logical error] Your program runs without generating any error
-messages, but it doesn't do the right thing.  The problem in the
-previous section, where we changed the value of \lstinline{b} before
-reading the old value, is a logical error.\index{error!logical}
-
-\item[Numerical error] Most computations in MATLAB are only
-approximately right.  Most of the time the errors are small enough
-that we don't care, but in some cases the round-off errors are a problem.\index{error!numerical}
-
+\item[Logical error] Your program runs without generating any error messages, but it doesn't do what you intended.  The problem in the previous section, where we changed the value of \lstinline{b} before reading the old value, is a logical error.\index{error!logical}  Logical errors include some specific sub-species:
+\begin{description}
+    \item [Semantic error] The meaning inherent in the program is different from your intended meaning.  For example, your use the command \lstinline{sin(90)}, expecting MATLAB to interpret that as the sine of a \SI{90}{\degree} angle, but MATLAB returns 0.894 because the function expects the argument in radians.
+    \item [Type error] Errors involving incompatible data types.  We'll see examples of this later, such as trying to add a string (letters) to numbers.
+    \item[Numerical error] Most computations in MATLAB are only approximately right.  Most of the time the errors are small enough that we don't care, but in some cases the round-off errors are a problem.\index{error!numerical}
+\end{description}
 \end{description}
 
-Syntax errors are usually the easiest to deal with.  Sometimes the error messages
-are confusing, but MATLAB can usually tell you where the error is, at
-least roughly.
+Syntax errors are usually the easiest to deal with because you will get timely feedback on the error; the code simply won't run until they are fixed.  Sometimes the error messages are confusing, but MATLAB can usually tell you where the error is, at least roughly.  The MATLAB Editor can even continuously check your code before you try to execute, similar to automated spell-check when writing a document.
 
-Runtime errors are harder because, as I mentioned before, MATLAB
-can tell you where it detected the problem, but not what caused it.
+Runtime errors a little harder because, as I mentioned before, MATLAB can tell you where it detected the problem, but often not what caused it.
 
-Logical errors are hard because MATLAB can't help at all.
-From MATLAB's point of view there's nothing wrong with the program; only you
-know what the program is supposed to do, so only you can check it.
+Logical errors, akin to the \href{https://en.wikipedia.org/wiki/Garbage_in,_garbage_out}{garbage in, garbage out} concept, are hard because MATLAB can't help at all. From MATLAB's point of view there's nothing wrong with the program; only you know what the program is supposed to do, so only you can check it.  These errors are usually detected only through deliberate testing to execute the program, or parts of the program, when you have a clear way to verify that the actual behavior matches the intended outcome.
 
-\index{bug}
+Semantic errors are best avoided at design time by reading the documentation about the commands you are using so that you are interpreting them the same way that MATLAB expects and writing down your models before implementing them in a program.
 
-Numerical errors can be tricky because it's not clear whether the
-problem is your fault.  For most simple computations, MATLAB produces
-the floating-point value that is closest to the exact solution, which
-means that the first 15 significant digits should be correct.
+Numerical errors can be tricky because it's not clear whether the problem is your fault.  For most simple computations, MATLAB produces the floating-point value that is closest to the exact solution, which means that the first 15 significant digits should be correct.
 
-But some computations are ill-conditioned, which means that even if your program is correct, the round-off errors accumulate and the number of correct digits can be smaller.  Sometimes MATLAB can warn you that
-this is happening, but not always!  \emph{Precision} (the number of digits
-in the answer) does not imply \emph{accuracy} (the number of digits that
-are right).
+But some computations are ill-conditioned, which means that even if your program is correct, the round-off errors accumulate and the number of correct digits can be smaller.  Sometimes MATLAB can warn you that this is happening, but not always!  \emph{Precision} (the number of digits in the answer) does not imply \emph{accuracy} (the number of digits that are right).
 
 
 \section{Absolute and Relative Error}

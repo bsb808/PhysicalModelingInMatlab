@@ -46,7 +46,7 @@ For example, to represent a position in two-dimensional space, we can use a vect
 >> P = [3 4]
 \end{code}
 
-To interpret this vector, we have to know the coordinate system it is defined in.  Most commonly, we use a Cartesian system where the x-axis points east and the y-axis points north.  In that case \lstinline{P} represents a point 3~units east and 4~units north of the origin.
+To interpret this vector, we have to know the coordinate system it is defined in.  Most commonly, we use a Cartesian system where the x-axis points east and the y-axis points north.  This is one of many typical conventions, referred to in three dimensions and East-North-Up (ENU). In that case \lstinline{P} represents a point 3~units east and 4~units north of the origin.
 
 \index{Cartesian coordinates}
 \index{magnitude}
@@ -139,43 +139,56 @@ traveled from the starting place and $y$ representing height or altitude.
 \index{altitude}
 \index{rate function}
 
-Listing~\ref{lst:baseball_rate_func} shows a rate function we can use to simulate this system with \lstinline{ode45}:
+Using Newtonian mechanics ($F=ma$), our simple model of the dynamics of a baseball are the following equations of motion:
 
-\begin{lstlisting}[caption={A rate function we can use to model the flight of a baseball}, label={lst:baseball_rate_func}]
-function res = rate_func(t, W)
-    P = W(1:2);
-    V = W(3:4);
+\begin{eqnarray*}
+    \ddot{x}(t) &=& 0 \\
+    \ddot{y}(t) &=& -g
+\end{eqnarray*}
 
-    dPdt = V;
-    dVdt = acceleration(t, P, V);
+There are no forces (yet) in the horizontal $x$ direction and only gravity in the vertical $y$ direction.
 
-    res = [dPdt; dVdt];
-end
+Using the same process from Section~\ref{s:newton} we can introduce state variable for the velocity of the baseball in the horizontal and vertical direction, $v_x$ and $v_y$.   This process of introducing new variables is confusing at first, but hopefully it makes some intuitive sense that the \emph{state} of our baseball system is described by position and velocity.  The state vector of the system is then these four states.  They can be in any order.  The order is important to keep in mind for book keeping in implementation, but the physics don't change.  We'll choose to define the state vector as
+\begin{equation}\label{e:bstate}
+    \mathbf{x}(t) = \left\{ \begin{array}{c}
+        x \\ v_x  \\ y \\ v_y
+    \end{array}\right\}.
+\end{equation}
 
-function res = acceleration(t, P, V)
-    g = 9.8;             % acceleration due to gravity in m/s^2
-    a_gravity = [0; -g];
-    res = a_gravity;
-end
-\end{lstlisting}
+The model, now in state-space from, becomes
+\begin{equation}\label{e:baseballstate}
+    \left\{ \begin{array}{c}
+        \dot{x}(t) \\ \dot{v_x}(t)  \\ \dot{y}(t) \\ \dot{v_y}(t)
+    \end{array}\right\}
+    =
+    \left[ \begin{array}{cccc}
+        0  & 1 & 0 & 0\\
+        0 & 0 & 0 & 0\\
+        0 & 0 & 0 & 1\\
+        0 & 0 & 0 & 0\\
+    \end{array}
+    \right]
+    \left\{ \begin{array}{c}
+        x \\ v_x  \\ y \\ v_y
+    \end{array}\right\}
+    +
+    \left\{\begin{array}{c}
+         0 \\ 0 \\ 0 \\ -g
+    \end{array}
+    \right\}
+    .
+\end{equation}
 
-The second argument of \lstinline{rate_func} is understood to be a vector,
-\lstinline{W}, with four elements.  The first two are assigned to \lstinline{P},
-which represents position; the last two are assigned to \lstinline{V}, which
-represents velocity. Both \lstinline{P} and \lstinline{V} have two elements,
-representing the $x$ and $y$ components.
+Listing~\ref{lst:baseball_rate_func} shows a rate function, named \lstinline{state_transition}, we can use to simulate this system with \lstinline{ode45}:
 
-\index{derivative}
-\index{velocity}
+\lstinputlisting[style=mcode, firstline=31, lastline=58, caption={A rate function we can use to model the flight of a baseball}, label={lst:baseball_rate_func}]
+{../code/chap12/baseball_statespace.m}
 
-The goal of the rate function is to compute the derivative of \lstinline{W}, so the output has to be a vector with four elements, where the first two represent the derivative of \lstinline{P}  and the last two represent the derivative of \lstinline{V}.
-The derivative of \lstinline{P} is velocity.  We don't have to compute it; we were given it as part of \lstinline{W}.
-The derivative of \lstinline{V} is acceleration.  To compute it, we call \lstinline{acceleration}, which takes as input variables time, position, and velocity.  In this example, we don't use any of the input variables, but we will soon.
+The second argument of is understood to be a vector,\lstinline{xx}, with four elements.  To avoid a hard-to-find semantic bug, it is key that you use a consistent interpretation of the meaning of this vector, that it includes the variables in the order that we defined in Equation~\ref{ebstate}.  Having a written mathematical model, Equation~\ref{e:baseballstate}, is a good defense.
 
-\index{air resistance}
-\index{gravity}
+The goal of the rate function is to compute the derivative of the state vector \lstinline{xx}, the left-hand side of Equation\~ref{e:baseballstate}.   
 
-For now we'll ignore air resistance, so the only force on the baseball is gravity.  We represent acceleration due to gravity with a vector that has magnitude \lstinline{g} and direction along the negative y-axis.
+For now, we'll ignore air resistance, so the only force on the baseball is gravity.  We represent acceleration due to gravity with a vector that has magnitude \lstinline{g} and direction along the negative y-axis.
 
 Let's assume that a ball is batted from an initial position \SI{1}{\meter} above the home plate, with an initial velocity of \SI{40}{\meter\per\second} in the horizontal and \SI{30}{\meter\per\second} in the vertical direction.
 
@@ -183,48 +196,33 @@ Let's assume that a ball is batted from an initial position \SI{1}{\meter} above
 
 Here's how we can call \lstinline{ode45} with these initial conditions:
 
-\begin{code}
-    P = [0; 1];       % initial position in m
-    V = [40; 30];     % initial velocity in m/s
-    W = [P; V];       % initial condition
+\lstinputlisting[style=mcode, firstline=1, lastline=30]{../code/chap12/baseball_statespace.m}
 
-    tspan = [0 8]
-    [T, M] = ode45(@rate_func, tspan, W);
-\end{code}
+The initial conditions are defined by \lstinline{xx_init} as a column vector using the transpose operator \lstinline{'}.
 
-\lstinline{P} and \lstinline{V} are column vectors because we put semicolons between the elements.
-So \lstinline{W} is a column vector with four elements.
-And \lstinline{tspan} specifies that we want to run the simulation for \SI{8}{\second}.
-
-\index{time span}
-\index{output variable}
-
-The output variables from \lstinline{ode45} are a vector,
-\lstinline{T}, that contains time values and a matrix, \lstinline{M}, with four columns: the first two are position; the last two are velocity.
-
-Here's how we can plot position as a function of time:
-
-\begin{code}
-    X = M(:, 1);
-    Y = M(:, 2);
-
-    plot(T, X)
-    plot(T, Y)
-\end{code}
-
-\lstinline{X} and \lstinline{Y} get the first and second columns from \lstinline{M}, which are the $x$ and $y$ position coordinates.
+The output variables from \lstinline{ode45} are a vector, \lstinline{tout}, that contains time values and a matrix, \lstinline{Xout}, with four columns.  Each row of \lstinline{Xout} is the state of the system at the corresponding time from \lstinline{tout}.  We can slice this matrix to access the position values based on our model's definition of state, Equation~\ref{e:bstate}.
 
 
-Figure~\ref{fig:baseball1} shows what these coordinates look like as a function of time.  The x-coordinate increases linearly because the $x$ velocity is constant.  The y-coordinate goes up and down, as we expect.
+Figure~\ref{f:baseball1} shows what these coordinates look like as a function of time and in space.  The x-coordinate increases linearly because the $x$ velocity is constant.  The y-coordinate goes up and down, as we expect.
 
 \begin{figure}[h]
-\centerline{\includegraphics[scale=0.8]{images/figure12_02_new.eps}}
-\caption{Simulated flight of a baseball neglecting drag force}
-\label{fig:baseball1}
+    \centering
+    \begin{subfigure}{0.45\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{../code/chap12/baseball_time.png}
+        \caption{Baseball solution time series}
+    \end{subfigure}
+    \quad % Adds some horizontal space between the images
+    \begin{subfigure}{0.45\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{../code/chap12/baseball_xy.png}
+        \caption{Baseball solution in x and y}
+    \end{subfigure}
+    \caption{Two ways to visualize the solution}
+    \label{f:baseball1}
 \end{figure}
 
-The simulation ends just before the ball lands, having traveled almost \SI{250}{\meter}.  That's substantially farther than a real baseball would travel, because we have ignored air resistance, or ``drag force.''
-
+The simulation ends just before the ball lands, having traveled almost \SI{180}{\meter}.  That's substantially farther than a real baseball would travel, because we have ignored air resistance, or ``drag force.''
 
 \section{Drag Force}
 \label{drag}
@@ -251,17 +249,8 @@ $\vec{V}$ is the baseball's velocity vector, $v$ is the magnitude of $\vec{V}$, 
 \index{unit vector}
 
 The function in Listing~\ref{lst:baseball_drag} computes the drag force on a baseball:
+\lstinputlisting[style=mcode, firstline=68, lastline=81, label=lst:baseball_drag]{../code/chap12/baseball_statespace2.m}
 
-\begin{lstlisting}[caption={A function that calculates the drag force on a baseball}, label={lst:baseball_drag}]
- function res = drag_force(V)
-    C_d = 0.3;      % dimensionless
-    rho = 1.3;      % kg / m^3
-    A = 0.0042;     % m^2
-    v = norm(V);    % m/s
-
-    res = -1/2 * C_d * rho * A * v * V;
-end
-\end{lstlisting}
 
 The drag coefficient for a baseball is about 0.3.
 The density of air at sea level is about \SI{1.3}{\kilogram\per\meter\cubed}.
@@ -271,21 +260,12 @@ The cross-sectional area of a baseball is \SI{0.0042}{\meter\squared}.
 \index{cross-sectional area}
 
 Now we have to update \lstinline{acceleration} to take drag into account:
+\lstinputlisting[style=mcode, firstline=51, lastline=67]{../code/chap12/baseball_statespace2.m}
 
-\begin{code}
-function res = acceleration(t, P, V)
-    g = 9.8;                       % acceleration due to gravity in m/s^2
-    a_gravity = [0; -g];
-
-    m = 0.145;                     % mass in kilograms
-    a_drag = drag_force(V) / m;
-    res = a_gravity + a_drag;
-end
-\end{code}
 
 As in Listing~\ref{lst:baseball_rate_func}, \lstinline{acceleration} represents acceleration due to gravity with a vector that has magnitude \lstinline{g} and direction along the negative y-axis.
 But now it also computes drag force and divides by the mass of the baseball to get acceleration due to drag.
-Finally, it adds \lstinline{a_gravity} and \lstinline{a_drag} to get the total acceleration of the baseball.
+Finally, it adds the two acceleration vectors, representing gravity and drag, to get the total acceleration of the baseball.
 
 
 Figure~\ref{fig:vector3} shows the following quantities graphically:  (1) acceleration due to drag, $\vec{D}$, which is in the opposite direction to (2)~velocity, $\vec{V}$; (3)~acceleration due to gravity, $\vec{G}$, which is straight down; and (4)~total acceleration, $\vec{A}$, which is the sum of $\vec{D}$ and $\vec{G}$.
@@ -299,130 +279,27 @@ $\vec{D}$; acceleration due to gravity, $\vec{G}$; and total acceleration, $\vec
 
 \index{acceleration}
 
-Figure~\ref{fig:baseball2} shows the results from \lstinline{ode45}.  The ball lands after about \SI{5}{\second}, having traveled less than \SI{150}{\meter}, substantially less than what we got without air resistance, about \SI{250}{\meter}.
+Figure~\ref{f:baseball2} shows the results from \lstinline{ode45}.  The ball lands after about \SI{5}{\second}, having traveled less than \SI{120}{\meter}, substantially less than what we got without air resistance, about \SI{180}{\meter}.
+
 
 \begin{figure}[h]
-\centerline{\includegraphics[scale=0.8]{images/figure12_04_new.eps}}
-\caption{Simulated flight of a baseball including drag force}
-\label{fig:baseball2}
+    \centering
+    \begin{subfigure}{0.45\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{../code/chap12/baseball2_time.png}
+        \caption{Baseball solution time series}
+    \end{subfigure}
+    \quad % Adds some horizontal space between the images
+    \begin{subfigure}{0.45\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{../code/chap12/baseball2_xy.png}
+        \caption{Baseball solution in x and y}
+    \end{subfigure}
+    \caption{Simulated flight of a baseball including drag force including drag froce}
+    \label{f:baseball2}
 \end{figure}
 
-
 This result suggests that ignoring air resistance is not a good choice for modeling a baseball.
-
-
-\section{What Could Go Wrong?}
-
-What could go wrong?  Well, \lstinline{vertcat} for one.  To explain
-what that means, I'll start with \emph{concatenation}, which is
-the operation of joining two matrices into a larger matrix.
-\emph{Vertical concatenation} joins the matrices by stacking them on
-top of each other; \emph{horizontal concatenation} lays them
-side by side.
-
-\index{concatenation}
-\index{vertical concatenation}
-\index{vertcat@\lstinline{vertcat}}
-
-Here's an example of horizontal concatenation with row vectors:
-
-\begin{code}
->> x = 1:3
-x = 1     2     3
-
->> y = 4:5
-y = 4     5
-
->> z = [x, y]
-z = 1     2     3     4     5
-\end{code}
-
-Inside brackets, the comma operator performs horizontal concatenation.
-The vertical concatenation operator is the semicolon.  Here's an
-example with matrices:
-
-\index{comma operator}
-\index{operator!comma}
-
-\begin{code}
->> X = zeros(2, 3)
-
-X =  0     0     0
-     0     0     0
-
->> Y = ones(2, 3)
-
-Y =  1     1     1
-     1     1     1
-
->> Z = [X; Y]
-
-Z =  0     0     0
-     0     0     0
-     1     1     1
-     1     1     1
-\end{code}
-
-These operations only work if the matrices are the same size along
-the dimension where they are glued together.  If not, you get
-
-\begin{code}
->> a = 1:3
-
-a = 1     2     3
-
->> b = a'
-
-b =  1
-     2
-     3
-
->> c = [a, b]
-Error using horzcat
-Dimensions of matrices being concatenated are not consistent.
-
->> c = [a; b]
-Error using vertcat
-Dimensions of matrices being concatenated are not consistent.
-\end{code}
-
-In this example, \lstinline{a} is a row vector and \lstinline{b} is a column
-vector, so they can't be concatenated in either direction.
-
-Reading the error messages, you might guess that \lstinline{horzcat}
-is the function that performs horizontal concatenation, and likewise
-with \lstinline{vertcat} and vertical concatenation.  You would be correct.
-
-\index{horzcat@\lstinline{horzcat}}
-
-In Listing~\ref{lst:baseball_rate_func} we used vertical concatenation to pack \lstinline{dPdt} and \lstinline{dVdt} into the output variable:
-
-\begin{code}
-function res = rate_func(t, W)
-    P = W(1:2);
-    V = W(3:4);
-
-    dPdt = V;
-    dVdt = acceleration(t, P, V);
-
-    res = [dPdt; dVdt];
-end
-\end{code}
-
-As long as \lstinline{dPdt} and \lstinline{dVdt} are column vectors,
-the semicolon performs vertical concatenation, and the result is
-a column vector with four elements.  But if either of them is a
-row vector, that's trouble.
-
-\index{column vector}
-
-The \lstinline{ode45} function expects the result from \lstinline{rate_func} to be a
-column vector, so if you are working with \lstinline{ode45}, it's
-probably a good idea to make everything a column vector.
-
-In general, if you run into problems with \lstinline{horzcat} and
-\lstinline{vertcat}, use \lstinline{size} to display the dimensions of the operands,
-and make sure you are clear on which way your vectors go.
 
 \section{Chapter Review}
 
@@ -435,9 +312,6 @@ A \emph{spatial vector} is a value that represents a multidimensional physical q
 A spatial vector has a direction and a magnitude.  The magnitude is also called the \emph{norm} of the vector.
 A \emph{unit vector} is a vector with norm 1, which is often used to represent a
 direction.
-
-\emph{Concatenation} is the operation of joining two vectors or matrices end-to-end to
-form a new vector or matrix.
 
 In the next chapter, we'll continue with the baseball example, using \lstinline{fzero}, which we saw in Chapter~\ref{fzero}, and a new tool for optimization, called \lstinline{fminsearch}.  We'll also see a simple way to animate the solution of a differential equation.
 

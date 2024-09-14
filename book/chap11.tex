@@ -7,6 +7,7 @@ So far we've seen first-order differential equations and systems of first-order 
 \index{Newton's law of motion}
 
 \section{Newtonian Motion}
+\label{s:newton}
 
 Newton's second law of motion is often written like this:
 
@@ -48,11 +49,13 @@ as a system of first-order ODEs:
 The first equation says that the first derivative of $r$ is $v$;
 the second equation says that the first derivative of $v$ is $a$.
 
-Another way to present this model is to put it into \emph{state space} from.  The standard form for the state equation is
-\begin{equation}
+Another way to present this model is to put it into linear \emph{state space} form.  The standard form for the state equation is
+\begin{equation} \label{e:statespace}
     \dot{\mathbf{x}}(t) = A \mathbf{x}(t) + B \mathbf{u}(t) 
 \end{equation}
-where $\mathbf{x}(t)$ is the state vector of the system, $\mathbf{u}(t)$ is the input vector to the system, $A$ is the state transition matrix and $B$ is the input matrix.  We've used the notation convention hwere scalar variables are in in regular font (e.g., $t$), vectors are in bold font (e.g., $\mathbf{x}$) and matrices are capitalized (e.g., $A$).  To get our system of equations into state space form we can define the state vector as a column vector with elements of position ($r(t)$) and velocity ($v(t)$).
+where $\mathbf{x}(t)$ is the state vector of the system, $\mathbf{u}(t)$ is the input vector to the system, $A$ is the state transition matrix and $B$ is the input matrix.  Again we've used the notation convention hwere scalar variables are in in regular font (e.g., $t$), vectors are in bold font (e.g., $\mathbf{x}$) and matrices are capitalized (e.g., $A$).  This linear form is a special case of the more general non-linear state-space form in Equation~\ref{e:nonlinearstatespace}
+
+To get our system of equations into state space form we can define the state vector as a column vector with elements of position ($r(t)$) and velocity ($v(t)$).
 
 \begin{equation}
 \left\lbrace
@@ -75,6 +78,8 @@ where $\mathbf{x}(t)$ is the state vector of the system, $\mathbf{u}(t)$ is the 
 \end{array} \right]
 \left\{ a \right\}
 \end{equation}
+
+It turns out that any higher-order ordinary differential equation (ODE) can be transformed into a system of first-order ODEs. Numberical methods, such as \lstinline{ode45} are often setup to operate on these systems of first-order ODEs.  This example, of transforming a single second-order ODE into a system of two first-order ODEs is a specific example of a general approach.
 
 \section{Free Fall}
 \label{freefall}

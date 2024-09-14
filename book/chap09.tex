@@ -135,7 +135,7 @@ One option is to break $\Delta t$ into smaller pieces, called
     \end{array}
 \end{equation}
 
-Here, $tt_i$ is a vector of times where we estimate the value of $y$, and $yy_i$ is the vector of estimates.
+Here, $tt_i$ is a vector of times when we estimate the value of $y$, and $yy_i$ is the vector of estimates.
 For each index $i$, $yy_i$ is an estimate of $y(tt_i)$.
 
 \index{time step}
@@ -193,7 +193,7 @@ Before the loop, we create two vectors, \lstinline{tt} and \lstinline{yy}, and s
 
 Inside the loop, we compute the growth rate based on the current time, \lstinline{tt(i)}, and population, \lstinline{tt(i)}.  You might notice that the rate depends only on population, but we pass time as an input variable anyway, for reasons you'll see soon.
 
-After computing the growth rate, we add an element both \lstinline{tt} and \lstinline{yy}, incrasing their length by one.  Then, when the loop exits, we plot \lstinline{yy} as a function of \lstinline{tt}, adding labels and units as good engineering practice.
+After computing the growth rate, we add an element both \lstinline{tt} and \lstinline{yy}, increasing their length by one.  Then, when the loop exits, we plot \lstinline{yy} as a function of \lstinline{tt}, adding labels and units as good engineering practice.
 
 If you run the code, you should get a plot of population over time, as shown in Figure~\ref{fig:euler}.
 
@@ -237,7 +237,7 @@ We can call \lstinline{ode45} from the Command Window like this:
 plot(T, Y)
 \end{code}
 
-The first argument is a function handle, as we saw in Chapter~\ref{fzero}.  The second argument is the time interval where we want to evaluate the solution; in this case the interval is from $t=0$ to $t=4$ hours.  The third argument is the initial population, 5 cells.  The result is two vectors, a vector of time values for the solution and a vector of the same lenth with the solution.
+The first argument is a function handle, as we saw in Chapter~\ref{fzero}.  The second argument is the time interval where we want to evaluate the solution; in this case the interval is from $t=0$ to $t=4$ hours.  The third argument is the initial population, 5 cells.  The result is two vectors, a vector of time values for the solution and a vector of the same length with the solution.
 
 \index{function handle}
 \index{handle!function}
@@ -246,7 +246,6 @@ The first argument is a function handle, as we saw in Chapter~\ref{fzero}.  The 
 
 The full example, as a live script, is as follows:
 \includepdf[pages=-,frame,pagecommand={},width=\textwidth]{../code/chap09/euler_compare.pdf}
-
 
 The solid line is the estimate we computed with Euler's method; the dashed line is the solution from \lstinline{ode45}.
 
@@ -343,7 +342,7 @@ Figure~\ref{fig:rats} shows the results.
 
 \begin{figure}[ht]
 \centerline{\includegraphics[width=0.7\textwidth]{../code/chap09/rats.png}}
-\caption{Solutions to a simple differential equation by Euler's method and \lstinline{ode45}}
+\caption{Solutions to a time-dependent differential equation by Euler's method and \lstinline{ode45}}
 \label{fig:rats}
 \end{figure}
 
@@ -478,7 +477,7 @@ legend('euler', 'ode45', 'Location', 'northwest')
 Finally,  save the figures using \lstinline{saveas}:
 
 \begin{code}
-saveas(gcf,'test.png','png')
+saveas(gcf,'runge.png','png')
 \end{code}
 
 The first argument is the figure we want to save; \lstinline{gcf} is a MATLAB command that stands for ``get current figure,'' which is the figure we just drew.  The second argument is the filename.  The extension specifies the format we want, which is a PNG (\emph{.png}) image file.  The third argument tells MATLAB what driver to use.  The details aren't important, but \lstinline{'png'} generates figures as color images.

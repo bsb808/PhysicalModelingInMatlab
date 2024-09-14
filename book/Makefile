@@ -15,3 +15,6 @@ DEST = /home/downey/public_html/greent/matlab
 distrib:
 	rsync -a $(PDF) html $(DEST)
 	cd $(DEST)/..; sh back
+	
+clean:
+	rm -f main.aux main.log main.idx main.ilg main.ind main.toc main.out
