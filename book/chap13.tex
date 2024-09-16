@@ -17,10 +17,11 @@ In the previous chapter we wrote functions to simulate the flight of a baseball 
 \index{range}
 
 First, we need an event function to stop the simulation when the ball lands.
-
 \begin{code}
-function [value, isterminal, direction] = event_func(t, W)
-    value = W(2);
+function [value, isterminal, direction] = event_landing(t, xx)
+    % Event function for ode solver to trigger when vertical position
+    % is zero
+    value = xx(3);
     isterminal = 1;
     direction = -1;
 end
@@ -30,19 +31,12 @@ end
 \index{ODE event}
 \index{odeset@\lstinline{odeset}}
 
-This is similar to the event function we saw in Chapter~\ref{events}, except that it uses \lstinline{W(2)} as the event value, which is the y-coordinate.  This event function stops the simulation when the altitude of the ball is~0 and falling.
+This is similar to the event function we saw in Chapter~\ref{events}, except that it uses \lstinline{xx(3)} as the event value, which is the element of the state vector corresponding to the y-position.  This event function stops the simulation when the altitude of the ball is~0 and falling.
 
 Now we can call \lstinline{ode45} like this:
+\lstinputlisting[style=mcode, firstline=4, lastline=10]
+{../code/chap13/baseball_statespace3.m}
 
-\begin{code}
-    P = [0; 1];       % initial position in m
-    V = [40; 30];     % initial velocity in m/s
-    W = [P; V];       % initial condition
-
-    tspan = [0 10];
-    options = odeset('Events', @event_func);
-    [T, M] = ode45(@rate_func, tspan, W, options);
-\end{code}
 
 The initial position of the ball is \SI{1}{\meter} above home plate.  The ball's initial velocity is \SI{40}{\meter\per\second} in the $x$-direction and \SI{30}{\meter\per\second} in the $y$-direction.
 
@@ -51,41 +45,30 @@ The initial position of the ball is \SI{1}{\meter} above home plate.  The ball's
 The maximum duration of the simulation is \SI{10}{\second}, but we expect an event to stop the simulation first.  We can get the final values of the simulation like~this:
 
 \begin{code}
-    T(end)
-    M(end, :)
+>> tout(end)
+ans =
+    5.9307
+>> Xout(end,:)
+ans =
+  112.2167   11.9139   -0.0000  -36.2661
 \end{code}
 
-The final time is \SI{5.1}{\second}.  The final $x$-position is \SI{131}{\meter}; the final $y$-position is 0, as expected.
+The final time is \SI{5.9}{\second}.  The final $x$-position is \SI{112}{\meter}; the final $y$-position is \SI{0}{m}, as expected.
 
 
-\section{Trajectory}
 
-Now we can extract the $x$- and $y$-positions:
-
-\begin{code}
-    X = M(:, 1);
-    Y = M(:, 2);
-\end{code}
-
-In Chapter~\ref{projectile} we plotted \lstinline{X} and \lstinline{Y} separately as functions of time.  As an alternative, we can plot them against each other, like this:
-
-\begin{code}
-    plot(X, Y)
-\end{code}
-
-
-Figure~\ref{fig:baseball3} shows the result, which is the \emph{trajectory} of the baseball from launch, on the left, to landing, on the right.
+As we saw in Chapter~\ref{projectile}, we can plot the \emph{trajectory} the baseball from launch, on the left, to landing, on the right.  This plot is repeated in Figure~\ref{f:baseball3}
 
 \begin{figure}[h]
-\centerline{\includegraphics[scale=0.8]{images/figure13_01_new.eps}}
+\centerline{\includegraphics[width=0.7\textwidth]{../code/chap12/baseball2_xy.png}}
 \caption{Simulated flight of a baseball plotted as a trajectory}
-\label{fig:baseball3}
+\label{f:baseball3}
 \end{figure}
 
 \index{trajectory}
 
 
-\section{Range Versus Angle}
+\section{Exhaustive Search: Range Versus Angle}
 
 Now we'll simulate the trajectory of the baseball with a range of launch angles.  First, we'll take the code we have and wrap it in a function that takes the launch angle as an input variable, runs the simulation, and returns the distance the ball travels (Listing~\ref{lst:baseball_range}).
 
@@ -133,11 +116,11 @@ And then plot \lstinline{ranges} as a function of \lstinline{thetas}:
 \end{code}
 
 Figure~\ref{fig:baseball4} shows the result.  As expected, the ball does not travel far if it's hit nearly horizontal or vertical.
-The peak is apparently near \SI{0.7}{\radian}.
+The peak is apparently near \SI{0.7}{\radian}.  This is an example of the most basic optimization technique, \emph{exhaustive search}.  In this case, it is computationally feasible to generate (almost) the entire solutions space, the full set of possible launch angles, and then simply select the best one.  
 
 \begin{figure}[h]
-\centerline{\includegraphics[scale=0.8]{images/figure13_02_new.eps}}
-\caption{Simulated flight of a baseball plotted as a trajectory}
+\centerline{\includegraphics[width=0.7\textwidth]{../code/chap13/range_exhaustive.png}}
+\caption{Exhaustive search for maximum range using the \emph{Data tips} graphical tool to choose the near-optimal solution}
 \label{fig:baseball4}
 \end{figure}
 
@@ -147,102 +130,153 @@ Considering that our model is only approximate, this result might be good enough
 
 \section{fminsearch}
 
-The \lstinline{fminsearch} function is similar to \lstinline{fzero}, which we saw in Chapter~\ref{fzero}.  Recall that \lstinline{fzero} takes a function handle and an initial guess, and it returns a root of the function.
-As an example, to find a root of the function
+The \href{https://www.mathworks.com/help/matlab/ref/fminsearch.html}{\lstinline{fminsearch}} function is similar to \lstinline{fzero}, which we saw in Chapter~\ref{fzero}.  Recall that \lstinline{fzero} takes a function handle and an initial guess, and it returns a root of the function.  The \lstinline{fminsearch} function uses this same interface to implement a nonlinear optimization to search for a value that minimizes the user-supplied function.
 
-\index{fminsearch@\lstinline{fminsearch}}
-\index{fzero@\lstinline{fzero}}
-
-\begin{code}
-function res = error_func(x)
-    res = x^2 - 2;
-end
-\end{code}
-we can call \lstinline{fzero} like this:
-
-\begin{code}
->> x = fzero(@error_func, 1)
-ans = 1.4142
-\end{code}
-
-The result is near the square root of 2.  Let's call \lstinline{fminsearch} with the same function:
-
-\begin{code}
->> x = fminsearch(@error_func, 1)
-x = -8.8818e-16
-\end{code}
-
-The result is close to 0, which is where this function is minimized.  Optionally, \lstinline{fminsearch} returns two values:
-
-\begin{code}
->> [x, fval] = fminsearch(@error_func, 1)
-x = -8.8818e-16
-
-fval = -2
-\end{code}
-
-The \lstinline{x} is the location of the minimum, and \lstinline{fval} is the value of the function evaluated at \lstinline{x}.
 
 If we want to find the maximum of a function, rather than the minimum, we can still use \lstinline{fminsearch} by writing a short function that negates the function we want to maximize.
 In the baseball example, the function we want to maximize is \lstinline{baseball_range}; we can wrap it in another function like~this:
 
 \begin{code}
-function res = min_func(angle)
-    res = -baseball_range(angle);
+function nrange = negative_range(theta)
+% Return -1*range for use with function minimization
+nrange = -1.0*baseball_range(theta);
 end
 \end{code}
 
 And then we call \lstinline{fminsearch} like this:
 
 \begin{code}
->> [x, fval] = fminsearch(@min_func, pi/4)
-
-x = 0.6921
-
-fval = -131.5851
+    % Inital estimate of solution
+    theta0 = 0;
+    % Optimization
+    [x, fval] = fminsearch(@negative_range, theta0)
+\end{code}
+which would return
+\begin{code}
+    x =
+    0.8403
+fval =
+ -113.9392
 \end{code}
 
-The optimal launch angle for the baseball is \SI{0.69}{\radian}; launched at that angle, the ball travels almost \SI{132}{\meter}.
+The optimal launch angle for the baseball is \SI{0.84}{\radian}; launched at that angle, the ball travels almost \SI{114}{\meter}.
 
 If you're curious about how \lstinline{fminsearch} works, see ``\nameref{howfminsearch}'' on page~\pageref{howfminsearch}.
 
+\section{Checking for Logical Errors}
+
+The \lstinline{fminsearch} algorithm often does a great job of finding a local minimum for a wide range of non-linear function, but there are lots of ways that things can go wrong.  This is a common issue with black-box solutions where the process of finding the solution is not clear.   The best way to avoid these logical bugs---where the program is doing exactly what we told it, but still doesn't give the result we intended---is to peer into the black-box. We can do this by setting some of the options available in the \lstinline{fminsearch} interface and looking at more of the outputs.  Here is an example:
+
+\begin{code}
+    % Optimization options
+    options = optimset('Display','iter', ...
+        'PlotFcns', {@optimplotx, @optimplotfval, @optimplotfunccount});
+    % Call optimization
+    [x, fval, exitflag, output] = fminsearch(@negative_range, theta0, options)
+\end{code}
+
+In the snippet above we use the \href{https://www.mathworks.com/help/matlab/ref/optimset.html}{\lstinline{optimset}} function to set parameters to values.  This is a common idiom in MATLAB where parameters are specified by \emph{Name} and \emph{Value}.  Here we are setting the parameter named \lstinline{Dispay} to the string value \lstinline{'iter'}.  Then we set the parameter named \lstinline{PlotFcns} to a cell array value with three function handles.  The eclipses, \lstinline{...}, tells MATLAB to continue the same command on the next line.  We have also added two additional output variables so that the algorithm is more verbose, giving us both the solution and some information about the solution.
+
+And here is what we get in return.  The \lstinline{Dispay='iter'} option results in the following output to the Command Window
+\begin{stdout}
+    Iteration   Func-count     min f(x)         Procedure
+     0            1         -14.0976         
+     1            2         -14.1229         initial simplex
+     2            4         -14.1736         expand
+     3            6         -14.2755         expand
+     4            8         -14.4816         expand
+     5           10         -14.9023         expand
+     6           12         -15.7779         expand
+     7           14          -17.663         expand
+     8           16         -21.9205         expand
+     9           18         -31.8432         expand
+    10           20         -53.6809         expand
+    11           22         -92.3186         expand
+    12           24         -112.788         reflect
+    13           26         -113.243         contract outside
+    14           28         -113.923         contract inside
+    15           30         -113.923         contract inside
+    16           32         -113.927         contract inside
+    17           34         -113.939         contract inside
+    18           36         -113.939         contract inside
+    19           38         -113.939         contract inside
+    20           40         -113.939         contract inside
+    21           42         -113.939         contract inside
+    22           44         -113.939         contract inside
+    23           46         -113.939         contract inside
+    24           48         -113.939         contract inside
+ 
+Optimization terminated:
+ the current x satisfies the termination criteria using OPTIONS.TolX of 1.000000e-04 
+ and F(X) satisfies the convergence criteria using OPTIONS.TolFun of 1.000000e-04 
+\end{stdout}
+This gives us some diagnostic information about each step in the optimization and tells us that the solution converged, which is a good sign.
+
+Setting the \lstinline{PlotFcns} option to the three built-in plotting functions, results in a new figure window as shown in Figure~\ref{f:opt_plot}.   If you are quick, you might notice that this plot is generated incrementally as the optimization iterates.  This can be helpful for more computationally demanding scenarios that might take minutes or hours.  Having some incremental status information helps.
+\begin{figure}[h]
+    \centerline{\includegraphics[width=0.6\textwidth]{../code/chap13/opt_plot.png}}
+    \caption{Figure resulting from setting \\ \lstinline{'PlotFcns' = {@optimplotx, @optimplotfval, @optimplotfunccount}}}
+    \label{f:opt_plot}
+    \end{figure}
+
+The two additional output variables also help us make sure the answer we received is what we intended.
+\begin{code}
+exitflag =
+     1
+output = 
+  struct with fields:
+
+    iterations: 24
+     funcCount: 48
+     algorithm: 'Nelder-Mead simplex direct search'
+       message: 'Optimization terminated: the current x satisfies the 
+       termination criteria using OPTIONS.TolX of 1.000000e-04 
+        and F(X) satisfies the convergence criteria using 
+        OPTIONS.TolFun of 1.000000e-04 '
+\end{code}
+The \lstinline{exitflag} will be \lstinline{1} when the solution converged, \lstinline{0} when it exceeds the allowed number of iterations and \lstinline{-1} if the search ended do to a user-defined exit criteria---similar to the event function we used with \lstinline{ode45}.   The \lstinline{output} variable is a structure with fields to characterize the process.
+
+\clearpage
 
 \section{Animation}
 
-Animation is a useful tool for checking the results of a physical model.
-If something is wrong, animation can make it obvious.
-There are two ways to do animation in MATLAB.
-One is to use \lstinline{getframe} to capture a series of images and then use \lstinline{movie} to play them back.
+Animation is a useful tool for checking the results of a physical model. If something is wrong, animation can make it obvious. There are two ways to do animation in MATLAB. One is to use \lstinline{getframe} to capture a series of images and then use \lstinline{movie} to play them back.  This method is a bit involved, but allows you to generate a standalone video file, for example, a MP4 file.
 
 \index{animation}
 \index{getframe@\lstinline{getframe}}
 
-The more informal way is to draw a series of plots.  Listing~\ref{lst:animate} is a function that animates the results of a baseball simulation:
+The more informal way is to draw a series of plots.  You may have seen this when MATLAB incrementally generated the plots in Figure~\ref{f:opt_plot}  Listing~\ref{lst:animate} is a snippet that animates the results of a baseball simulation:
 
-\begin{lstlisting}[caption={A function that animates the results of a baseball simulation}, label={lst:animate}]
-function animate(T,M)
-    X = M(:,1);
-    Y = M(:,2);
-
-    minmax = [min([X]), max([X]), min([Y]), max([Y])];
-
-    for i=1:length(T)
-        clf; hold on
+\begin{lstlisting}[caption={A snippet that animates the results of a baseball simulation}, label={lst:animate}]
+    % Animate
+    % Solve with ode45
+    tspan = [0 10];
+    xx_init = [0 30 1 40];
+    options = odeset('Events', @event_landing);
+    [tout, Xout] = ode45(@state_transition, tspan, xx_init, options);
+    
+    % Setup figure
+    figure(4);
+    clf();
+    x = Xout(:,1);
+    y = Xout(:,3);
+    minmax = [min([x]), max([x]), min([y]), max([y])];
+    % Plot each element in the solution
+    for ii=1:round(length(tout)*4/5)
+        clf; 
+        hold on;
+        plot(x(1:ii), y(1:ii), 'b:')
+        plot(x(ii), y(ii), 'ro')
         axis(minmax)
-        plot(X(i), Y(i), 'o')
+        xlabel('x position [m]')
+        ylabel('y position [m]')
         drawnow;
-
-        if i < length(T)
-            dt = T(i+1) - T(i);
+        if ii < length(tout)
+            dt = tout(ii+1) - tout(ii);
             pause(dt);
         end
     end
-end
 \end{lstlisting}
-
-The input variables are the output from \lstinline{ode45}: \lstinline{T}, which contains the time values, and \lstinline{M}, which contains the position and velocity of the baseball.
-
-\index{axis@\lstinline{axis}}
 
 A vector of four elements, \lstinline{minmax} is used inside the loop to set the axes of the figure.
 This is necessary because otherwise MATLAB scales the figure each time through the loop,
@@ -260,15 +294,6 @@ We have to call \lstinline{drawnow} after \lstinline{plot} so
 that MATLAB actually displays each plot.  Otherwise it waits
 until you finish drawing all the figures and then updates
 the display.
-
-We can call \lstinline{animate} like this:
-
-\begin{code}
-    tspan = [0 10];
-    W = [0 1 30 40];
-    [T, M] = ode45(@rate_func, tspan, W);
-    animate(T, M)
-\end{code}
 
 One limitation of this kind of animation is that the speed
 of the animation depends on how fast your computer can generate
@@ -302,7 +327,7 @@ real time.  After drawing each frame and calling
 until the next frame and use \lstinline{pause} to wait:
 
 \begin{code}
-    dt = T(i+1) - T(i);
+    dt = tout(ii+1) - tout(ii);
     pause(dt);
 \end{code}
 
