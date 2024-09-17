@@ -163,7 +163,7 @@ The optimal launch angle for the baseball is \SI{0.84}{\radian}; launched at tha
 
 If you're curious about how \lstinline{fminsearch} works, see ``\nameref{howfminsearch}'' on page~\pageref{howfminsearch}.
 
-\section{Checking for Logical Errors}
+\section{Logical Errors}
 
 The \lstinline{fminsearch} algorithm often does a great job of finding a local minimum for a wide range of non-linear function, but there are lots of ways that things can go wrong.  This is a common issue with black-box solutions where the process of finding the solution is not clear.   The best way to avoid these logical bugs---where the program is doing exactly what we told it, but still doesn't give the result we intended---is to peer into the black-box. We can do this by setting some of the options available in the \lstinline{fminsearch} interface and looking at more of the outputs.  Here is an example:
 
@@ -237,6 +237,54 @@ output =
 The \lstinline{exitflag} will be \lstinline{1} when the solution converged, \lstinline{0} when it exceeds the allowed number of iterations and \lstinline{-1} if the search ended do to a user-defined exit criteria---similar to the event function we used with \lstinline{ode45}.   The \lstinline{output} variable is a structure with fields to characterize the process.
 
 \clearpage
+
+\section{How fminsearch Works}
+\label{howfminsearch}
+
+According to the MATLAB documentation, \lstinline{fminsearch} uses the Nelder-Mead simplex algorithm.  You can read about it at \url{https://greenteapress.com/matlab/nelder}, but you might find it overwhelming.
+
+\index{fminsearch@\lstinline{fminsearch}}
+\index{Nelder-Mead}
+\index{golden-section search}
+
+To give you a sense of how it works, I will present a simpler algorithm, the \emph{golden-section search}.  Suppose we're trying to find the minimum of a function of a single variable, $f(x)$.
+
+As a starting place, assume that we have evaluated the function at three places,
+$x_1$, $x_2$, and $x_3$, and found that $x_2$ yields the lowest
+value. Figure~\ref{fig:golden1} shows this initial state.
+
+\begin{figure}[h]
+\centerline{\includegraphics[scale=0.8]{images/figure15_04_new.eps}}
+\caption{Initial state of a golden-section search}
+\label{fig:golden1}
+\end{figure}
+
+We will assume that $f(x)$ is continuous and \emph{unimodal} in this range, which means that there is exactly one minimum between $x_1$ and $x_3$.
+
+\index{minimum}
+\index{unimodal}
+
+The next step is to choose a fourth point, $x_4$, and evaluate
+$f(x_4)$.  There are two possible outcomes, depending on whether
+$f(x_4)$ is greater than $f(x_2)$ or not.
+Figure~\ref{fig:golden2} shows the two possible states.
+
+\begin{figure}[h]
+\centerline{\includegraphics[scale=0.8]{images/figure15_05_new.eps}}
+\caption{Possible states of a golden-section search after evaluating $f(x_4)$}
+\label{fig:golden2}
+\end{figure}
+
+If $f(x_4)$ is less than $f(x_2)$ (shown on the left), the
+minimum must be between $x_2$ and $x_3$, so we would discard $x_1$ and proceed with the new triple $(x_2, x_4, x_3)$.
+
+If $f(x_4)$ is greater than $f(x_2)$ (shown on the right), the
+local minimum must be between $x_1$ and $x_4$, so we would discard $x_3$ and proceed with the new triple $(x_1, x_2, x_4)$.
+
+Either way, the range gets smaller and our estimate of the optimal value of $x$ gets better.
+
+This method works for almost any value of $x_4$, but some choices
+are better than others.  You might be tempted to bisect the interval between $x_2$ and $x_3$, but that turns out not to be the best choice.  You can read about a better option at \url{https://greenteapress.com/matlab/golden}.
 
 \section{Animation}
 

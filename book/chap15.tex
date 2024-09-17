@@ -6,94 +6,9 @@ In this chapter we ``open the hood,'' looking more closely at how some of the to
 
 
 
-\section{How fzero Works}
-\label{howfzero}
-
-According to the MATLAB documentation, \lstinline{fzero} uses ``a combination of bisection, secant, and inverse quadratic interpolation methods.''  (See \url{https://greenteapress.com/matlab/fzero})
-
-\index{fzero@\lstinline{fzero}}
-\index{bisection}
-\index{secant method}
-\index{inverse quadratic interpolation}
-\index{root}
-
-To understand what that means, suppose we're trying to find a root of a function of one variable, $f(x)$, and assume we have evaluated the function at two places, $x_1$ and $x_2$, and found that the results have opposite signs.  Specifically, assume $f(x_1) > 0$ and $f(x_2) < 0$, as shown in Figure~\ref{fig:secant}.
-
-\begin{figure}[h]
-\centerline{\includegraphics[scale=0.8]{images/figure15_03_new.eps}}
-\caption{Initial state of a root-finding search}
-\label{fig:secant}
-\end{figure}
-
-As long as $f$ is continuous, there must be at least one root in this interval.
-In this case we would say that $x_1$ and $x_2$ \emph{bracket} a zero.
-
-\index{bracket}
-
-If this were all you knew about $f$, where would you go looking for
-a root?  If you said ``halfway between $x_1$ and $x_2$,''
-congratulations!  You just invented a numerical method called
-\emph{bisection}!
-
-If you said, ``I would connect the dots with a straight line
-and compute the zero of the line,''
-congratulations!  You just invented the \emph{secant method}!
-
-And if you said, ``I would evaluate $f$ at a third point, find the
-parabola that passes through all three points, and compute the zeros
-of the parabola,'' congratulations, you just invented
-\emph{inverse quadratic interpolation}!
-
-That's most of how \lstinline{fzero} works.  The details of how these methods are combined are interesting, but beyond the scope of this book.  You can read more at \url{https://greenteapress.com/matlab/brent}.
 
 
-\section{How fminsearch Works}
-\label{howfminsearch}
 
-According to the MATLAB documentation, \lstinline{fminsearch} uses the Nelder-Mead simplex algorithm.  You can read about it at \url{https://greenteapress.com/matlab/nelder}, but you might find it overwhelming.
-
-\index{fminsearch@\lstinline{fminsearch}}
-\index{Nelder-Mead}
-\index{golden-section search}
-
-To give you a sense of how it works, I will present a simpler algorithm, the \emph{golden-section search}.  Suppose we're trying to find the minimum of a function of a single variable, $f(x)$.
-
-As a starting place, assume that we have evaluated the function at three places,
-$x_1$, $x_2$, and $x_3$, and found that $x_2$ yields the lowest
-value. Figure~\ref{fig:golden1} shows this initial state.
-
-\begin{figure}[h]
-\centerline{\includegraphics[scale=0.8]{images/figure15_04_new.eps}}
-\caption{Initial state of a golden-section search}
-\label{fig:golden1}
-\end{figure}
-
-We will assume that $f(x)$ is continuous and \emph{unimodal} in this range, which means that there is exactly one minimum between $x_1$ and $x_3$.
-
-\index{minimum}
-\index{unimodal}
-
-The next step is to choose a fourth point, $x_4$, and evaluate
-$f(x_4)$.  There are two possible outcomes, depending on whether
-$f(x_4)$ is greater than $f(x_2)$ or not.
-Figure~\ref{fig:golden2} shows the two possible states.
-
-\begin{figure}[h]
-\centerline{\includegraphics[scale=0.8]{images/figure15_05_new.eps}}
-\caption{Possible states of a golden-section search after evaluating $f(x_4)$}
-\label{fig:golden2}
-\end{figure}
-
-If $f(x_4)$ is less than $f(x_2)$ (shown on the left), the
-minimum must be between $x_2$ and $x_3$, so we would discard $x_1$ and proceed with the new triple $(x_2, x_4, x_3)$.
-
-If $f(x_4)$ is greater than $f(x_2)$ (shown on the right), the
-local minimum must be between $x_1$ and $x_4$, so we would discard $x_3$ and proceed with the new triple $(x_1, x_2, x_4)$.
-
-Either way, the range gets smaller and our estimate of the optimal value of $x$ gets better.
-
-This method works for almost any value of $x_4$, but some choices
-are better than others.  You might be tempted to bisect the interval between $x_2$ and $x_3$, but that turns out not to be the best choice.  You can read about a better option at \url{https://greenteapress.com/matlab/golden}.
 
 \section{Chapter Review}
 

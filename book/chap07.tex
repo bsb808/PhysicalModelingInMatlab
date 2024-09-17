@@ -358,7 +358,7 @@ end
 \end{code}
 the warning message goes away.
 
-\subsection{Anonymous Function}
+\subsection{Anonymous Functions}
 
 One way to avoid a separate M-file, \emph{error\_func.m}, for the function definition we provide to \lstinline{fzero} is to define an 
 \href{https://www.mathworks.com/help/matlab/matlab_prog/anonymous-functions.html}{\emph{anonymous function}}.  
@@ -376,11 +376,54 @@ The second line defines the singe-expression anonymous function handle, \lstinli
 \end{code}
 This is the reason why there is no \lstinline{@} in the call to \lstinline{fzero}.
 
-Anonymous function make the code more concise, avoiding having separate files for script and the function definition, but at the expense of readability.  Amoung other issues, the syntax for defining anonymous functions is less-than intuitive.  A better way of being concise while maintaining readability might be to use a local function.  Since R2024a, local functions can be anywhere in the script file, not just at the end, so an equivalent implmentation would be...
+Anonymous function make the code more concise, avoiding having separate files for script and the function definition, but at the expense of readability.  Among other issues, the syntax for defining anonymous functions is less-than intuitive.  A better way of being concise while maintaining readability might be to use a local function.  Since R2024a, local functions can be anywhere in the script file, not just at the end, so an equivalent implementation would be...
 
 \lstinputlisting[style=mcode_numbers]{../code/chap07/fzero_demo_local.m}
 
 It is still beneficial to be aware of anonymous functions.  You will likely run into online examples and documentation that uses anonymous functions, even if you don't write them yourself.
+
+\section{How fzero Works}
+\label{howfzero}
+
+According to the MATLAB documentation, \lstinline{fzero} uses ``a combination of bisection, secant, and inverse quadratic interpolation methods.''  (See \url{https://greenteapress.com/matlab/fzero})
+
+\index{fzero@\lstinline{fzero}}
+\index{bisection}
+\index{secant method}
+\index{inverse quadratic interpolation}
+\index{root}
+
+To understand what that means, suppose we're trying to find a root of a function of one variable, $f(x)$, and assume we have evaluated the function at two places, $x_1$ and $x_2$, and found that the results have opposite signs.  Specifically, assume $f(x_1) > 0$ and $f(x_2) < 0$, as shown in Figure~\ref{fig:secant}.
+
+\begin{figure}[h]
+\centerline{\includegraphics[scale=0.8]{images/figure15_03_new.eps}}
+\caption{Initial state of a root-finding search}
+\label{fig:secant}
+\end{figure}
+
+As long as $f$ is continuous, there must be at least one root in this interval.
+In this case we would say that $x_1$ and $x_2$ \emph{bracket} a zero.
+
+\index{bracket}
+
+If this were all you knew about $f$, where would you go looking for
+a root?  If you said ``halfway between $x_1$ and $x_2$,''
+congratulations!  You just invented a numerical method called
+\emph{bisection}!
+
+If you said, ``I would connect the dots with a straight line
+and compute the zero of the line,''
+congratulations!  You just invented the \emph{secant method}!
+
+And if you said, ``I would evaluate $f$ at a third point, find the
+parabola that passes through all three points, and compute the zeros
+of the parabola,'' congratulations, you just invented
+\emph{inverse quadratic interpolation}!
+
+That's most of how \lstinline{fzero} works.  The details of how these methods are combined are interesting, but beyond the scope of this book.  You can read more at \url{https://greenteapress.com/matlab/brent}.
+
+
+
 
 \section{Debugging}
 
