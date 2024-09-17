@@ -182,7 +182,7 @@ The model, now in state-space from, becomes
 Listing~\ref{lst:baseball_rate_func} shows a rate function, named \lstinline{state_transition}, we can use to simulate this system with \lstinline{ode45}:
 
 \lstinputlisting[style=mcode, firstline=31, lastline=58, caption={A rate function we can use to model the flight of a baseball}, label={lst:baseball_rate_func}]
-{../code/chap12/baseball_statespace.m}
+{../code/chap_twodimensions/baseball_statespace.m}
 
 The second argument of is understood to be a vector,\lstinline{xx}, with four elements.  To avoid a hard-to-find semantic bug, it is key that you use a consistent interpretation of the meaning of this vector, that it includes the variables in the order that we defined in Equation~\ref{ebstate}.  Having a written mathematical model, Equation~\ref{e:baseballstate}, is a good defense.
 
@@ -196,7 +196,7 @@ Let's assume that a ball is batted from an initial position \SI{1}{\meter} above
 
 Here's how we can call \lstinline{ode45} with these initial conditions:
 
-\lstinputlisting[style=mcode, firstline=1, lastline=30]{../code/chap12/baseball_statespace.m}
+\lstinputlisting[style=mcode, firstline=1, lastline=30]{../code/chap_twodimensions/baseball_statespace.m}
 
 The initial conditions are defined by \lstinline{xx_init} as a column vector using the transpose operator \lstinline{'}.
 
@@ -209,13 +209,13 @@ Figure~\ref{f:baseball1} shows what these coordinates look like as a function of
     \centering
     \begin{subfigure}{0.45\textwidth}
         \centering
-        \includegraphics[width=\linewidth]{../code/chap12/baseball_time.png}
+        \includegraphics[width=\linewidth]{../code/chap_twodimensions/baseball_time.png}
         \caption{Baseball solution time series}
     \end{subfigure}
     \quad % Adds some horizontal space between the images
     \begin{subfigure}{0.45\textwidth}
         \centering
-        \includegraphics[width=\linewidth]{../code/chap12/baseball_xy.png}
+        \includegraphics[width=\linewidth]{../code/chap_twodimensions/baseball_xy.png}
         \caption{Baseball solution in x and y}
     \end{subfigure}
     \caption{Two ways to visualize the solution}
@@ -249,7 +249,7 @@ $\vec{V}$ is the baseball's velocity vector, $v$ is the magnitude of $\vec{V}$, 
 \index{unit vector}
 
 The function in Listing~\ref{lst:baseball_drag} computes the drag force on a baseball:
-\lstinputlisting[style=mcode, firstline=68, lastline=81, label=lst:baseball_drag]{../code/chap12/baseball_statespace2.m}
+\lstinputlisting[style=mcode, firstline=68, lastline=81, label=lst:baseball_drag]{../code/chap_twodimensions/baseball_statespace2.m}
 
 
 The drag coefficient for a baseball is about 0.3.
@@ -260,7 +260,7 @@ The cross-sectional area of a baseball is \SI{0.0042}{\meter\squared}.
 \index{cross-sectional area}
 
 Now we have to update \lstinline{acceleration} to take drag into account:
-\lstinputlisting[style=mcode, firstline=51, lastline=67]{../code/chap12/baseball_statespace2.m}
+\lstinputlisting[style=mcode, firstline=51, lastline=67]{../code/chap_twodimensions/baseball_statespace2.m}
 
 
 As in Listing~\ref{lst:baseball_rate_func}, \lstinline{acceleration} represents acceleration due to gravity with a vector that has magnitude \lstinline{g} and direction along the negative y-axis.
@@ -286,13 +286,13 @@ Figure~\ref{f:baseball2} shows the results from \lstinline{ode45}.  The ball lan
     \centering
     \begin{subfigure}{0.45\textwidth}
         \centering
-        \includegraphics[width=\linewidth]{../code/chap12/baseball2_time.png}
+        \includegraphics[width=\linewidth]{../code/chap_twodimensions/baseball2_time.png}
         \caption{Baseball solution time series}
     \end{subfigure}
     \quad % Adds some horizontal space between the images
     \begin{subfigure}{0.45\textwidth}
         \centering
-        \includegraphics[width=\linewidth]{../code/chap12/baseball2_xy.png}
+        \includegraphics[width=\linewidth]{../code/chap_twodimensions/baseball2_xy.png}
         \caption{Baseball solution in x and y}
     \end{subfigure}
     \caption{Simulated flight of a baseball including drag force including drag froce}

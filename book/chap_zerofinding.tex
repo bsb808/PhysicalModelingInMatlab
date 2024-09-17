@@ -313,7 +313,7 @@ to provide  a good initial guess.
 If not, another way to choose an initial guess is to plot the error function and
 approximate the zeros visually.  Here is a short script to do just that:
 
-\lstinputlisting[style=mcode]{../code/chap07/plot_error.m}
+\lstinputlisting[style=mcode]{../code/chap_zerofinding/plot_error.m}
 
 We've used the \lstinline{linspace} command to create a vector starting at -2, ending with 5, with 100 elements. The \lstinline{grid on} command displays the gray gridlines, which help identify the zero crossings.  You may also notice that if you use by hovering the cursor over the graph, MATLAB will display the nearest data point values using the \emph{data tips} interactive tool, illustrated in Figure~\ref{f:error_data}
 
@@ -364,7 +364,7 @@ One way to avoid a separate M-file, \emph{error\_func.m}, for the function defin
 \href{https://www.mathworks.com/help/matlab/matlab_prog/anonymous-functions.html}{\emph{anonymous function}}.  
 An anonymous function is a single statement function, not stored in a separate program file, associated with a function handle.  
 
-\lstinputlisting[style=mcode_numbers]{../code/chap07/fzero_afunc.m}
+\lstinputlisting[style=mcode_numbers]{../code/chap_zerofinding/fzero_afunc.m}
 
 The second line defines the singe-expression anonymous function handle, \lstinline{error_afunc_handle}.  Then we pass the function handle to \lstinline{fzero}.  Note that the \lstinline{error_afunc_handle} variable stores a function handle - not a function.
 \begin{code}
@@ -378,7 +378,7 @@ This is the reason why there is no \lstinline{@} in the call to \lstinline{fzero
 
 Anonymous function make the code more concise, avoiding having separate files for script and the function definition, but at the expense of readability.  Among other issues, the syntax for defining anonymous functions is less-than intuitive.  A better way of being concise while maintaining readability might be to use a local function.  Since R2024a, local functions can be anywhere in the script file, not just at the end, so an equivalent implementation would be...
 
-\lstinputlisting[style=mcode_numbers]{../code/chap07/fzero_demo_local.m}
+\lstinputlisting[style=mcode_numbers]{../code/chap_zerofinding/fzero_demo_local.m}
 
 It is still beneficial to be aware of anonymous functions.  You will likely run into online examples and documentation that uses anonymous functions, even if you don't write them yourself.
 

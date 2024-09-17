@@ -187,7 +187,7 @@ yy_{i+1} &=& yy_i + r \Delta t
 where $r$ is the rate of growth computed by \lstinline{rate_func}.
 Listing~\ref{lst:euler_method} has the code we need:
 
-\lstinputlisting[style=mcode, caption={A function implementing Euler's method}, label={lst:euler_method}]{../code/chap09/euler.m}
+\lstinputlisting[style=mcode, caption={A function implementing Euler's method}, label={lst:euler_method}]{../code/chap_odes/euler.m}
 
 Before the loop, we create two vectors, \lstinline{tt} and \lstinline{yy}, and set the first element of each with the initial conditions;  \lstinline{dt}, which is the size of the time steps, is \SI{0.1}{hours}.
 
@@ -245,7 +245,7 @@ The first argument is a function handle, as we saw in Chapter~\ref{fzero}.  The 
 \index{variable!output}
 
 The full example, as a live script, is as follows:
-\includepdf[pages=-,frame,pagecommand={},width=\textwidth]{../code/chap09/euler_compare.pdf}
+\includepdf[pages=-,frame,pagecommand={},width=\textwidth]{../code/chap_odes/euler_compare.pdf}
 
 The solid line is the estimate we computed with Euler's method; the dashed line is the solution from \lstinline{ode45}.
 
@@ -336,12 +336,12 @@ The third argument is the initial population, $y(0) = 1000$.
 \index{interval}
 
 We can put this all together in the following program:
-\lstinputlisting[style=mcode]{../code/chap09/rat_growth.m}
+\lstinputlisting[style=mcode]{../code/chap_odes/rat_growth.m}
 
 Figure~\ref{fig:rats} shows the results.
 
 \begin{figure}[ht]
-\centerline{\includegraphics[width=0.7\textwidth]{../code/chap09/rats.png}}
+\centerline{\includegraphics[width=0.7\textwidth]{../code/chap_odes/rats.png}}
 \caption{Solutions to a time-dependent differential equation by Euler's method and \lstinline{ode45}}
 \label{fig:rats}
 \end{figure}

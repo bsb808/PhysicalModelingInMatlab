@@ -35,7 +35,7 @@ This is similar to the event function we saw in Chapter~\ref{events}, except tha
 
 Now we can call \lstinline{ode45} like this:
 \lstinputlisting[style=mcode, firstline=4, lastline=10]
-{../code/chap13/baseball_statespace3.m}
+{../code/chap_optimization/baseball_statespace3.m}
 
 
 The initial position of the ball is \SI{1}{\meter} above home plate.  The ball's initial velocity is \SI{40}{\meter\per\second} in the $x$-direction and \SI{30}{\meter\per\second} in the $y$-direction.
@@ -60,7 +60,7 @@ The final time is \SI{5.9}{\second}.  The final $x$-position is \SI{112}{\meter}
 As we saw in Chapter~\ref{projectile}, we can plot the \emph{trajectory} the baseball from launch, on the left, to landing, on the right.  This plot is repeated in Figure~\ref{f:baseball3}
 
 \begin{figure}[h]
-\centerline{\includegraphics[width=0.7\textwidth]{../code/chap12/baseball2_xy.png}}
+\centerline{\includegraphics[width=0.7\textwidth]{../code/chap_twodimensions/baseball2_xy.png}}
 \caption{Simulated flight of a baseball plotted as a trajectory}
 \label{f:baseball3}
 \end{figure}
@@ -119,7 +119,7 @@ Figure~\ref{fig:baseball4} shows the result.  As expected, the ball does not tra
 The peak is apparently near \SI{0.7}{\radian}.  This is an example of the most basic optimization technique, \emph{exhaustive search}.  In this case, it is computationally feasible to generate (almost) the entire solutions space, the full set of possible launch angles, and then simply select the best one.  
 
 \begin{figure}[h]
-\centerline{\includegraphics[width=0.7\textwidth]{../code/chap13/range_exhaustive.png}}
+\centerline{\includegraphics[width=0.7\textwidth]{../code/chap_optimization/range_exhaustive.png}}
 \caption{Exhaustive search for maximum range using the \emph{Data tips} graphical tool to choose the near-optimal solution}
 \label{fig:baseball4}
 \end{figure}
@@ -214,7 +214,7 @@ This gives us some diagnostic information about each step in the optimization an
 
 Setting the \lstinline{PlotFcns} option to the three built-in plotting functions, results in a new figure window as shown in Figure~\ref{f:opt_plot}.   If you are quick, you might notice that this plot is generated incrementally as the optimization iterates.  This can be helpful for more computationally demanding scenarios that might take minutes or hours.  Having some incremental status information helps.
 \begin{figure}[h]
-    \centerline{\includegraphics[width=0.6\textwidth]{../code/chap13/opt_plot.png}}
+    \centerline{\includegraphics[width=0.6\textwidth]{../code/chap_optimization/opt_plot.png}}
     \caption{Figure resulting from setting \\ \lstinline{'PlotFcns' = {@optimplotx, @optimplotfval, @optimplotfunccount}}}
     \label{f:opt_plot}
     \end{figure}
