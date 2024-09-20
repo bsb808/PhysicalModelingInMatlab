@@ -14,7 +14,7 @@ To explain why functions are so important, I'll start by explaining one of the p
 \index{collision!name}
 \index{workspace}
 
-All scripts run in the same workspace, so if one script changes the value of a variable, all other scripts see the change.  With a small number of simple scripts, that's not a problem, but eventually the interactions between scripts become unmanageable.
+All scripts run in the same workspace, so if one script changes the value of a variable, all other scripts see the change.  With a few simple scripts, that's not a problem, but eventually the interactions between scripts become unmanageable.
 
 For example, the following script computes the
 sum of the first \lstinline{n} terms in a geometric sequence, but it also
@@ -212,7 +212,7 @@ When you ask for \lstinline{help}, MATLAB prints the comment you provide.
 \end{lstlisting}
 
 There are lots of conventions about what should be included
-in these comments.  Looking at some of examples of documentation for MATLAB's included functions can be a productive way to understand the style and convention used in documenting functions.  You can open code a MATLAB function in and Editor window (read-only) to better see the raw text.  For example,
+in these comments.  Looking at examples of documentation for MATLAB's included functions can be a productive way to understand the style and convention used in documenting functions.  You can open code a MATLAB function in and Editor window (read-only) to better see the raw text.  For example,
 \begin{code}
     >> edit mean
 \end{code}
@@ -239,7 +239,7 @@ to be an angle in radians.
 
 \item [Examples] Working examples of how you would use the function.  Often functions can be called in different ways, so providing examples of the applicable use cases helps convey the intended implementations.
 
-\item [See Also] If there are related functions, listing them can be really helpful for future users, including yourself.  For example the \lstinline{mean} function lists \lstinline{median, median, std, min, max, var, cov, mode}---all related summary statistics.
+\item [See Also] If there are related functions, listing them can be really helpful for future users, including yourself.  For example the \lstinline{mean} function lists \lstinline{median, median, std, min, max, var, cov, mode}---all related reduce operations that produce summary statistics.
 
 \end{description}
 
@@ -405,7 +405,7 @@ We can call this function and assign the output to variables in the workspace, m
         20
 \end{code}
 
-There are some potential gotchas here as well.  If we only provide one output in the function call, MATLAB will return just the first output variable without a warning or errror:
+There are some potential gotchas here as well.  If we only provide one output in the function call, MATLAB will return just the first output variable without a warning or error:
 \begin{code}
     >> added = sum_and_product(4, 5)
     added =

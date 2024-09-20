@@ -22,7 +22,7 @@ Suppose we have three variables, \lstinline{a}, \lstinline{b}, and \lstinline{c}
 ans = logical 1
 \end{code}
 
-The result is a \emph{logical} data type, which means it's either~\lstinline{1}, which means ``true,'' or~\lstinline{0}, which means ``false.''  In fact you can use \lstinline{true} as substitute for \lstinline{1} and \lstinline{false} as shorthand for \lstinline{0}:
+The result is a \emph{logical} data type, which means it's either~\lstinline{1}, which means ``true,'' or~\lstinline{0}, which means ``false.''  In fact, you can use \lstinline{true} as substitute for \lstinline{1} and \lstinline{false} as shorthand for \lstinline{0}:
 \begin{code}
     >> true
     ans =
@@ -355,7 +355,7 @@ habit and so my function signatures all have the same structure.
 
 The next step is to generalize this function by adding input
 variables.  The natural generalization is to replace the constant
-values~\lstinline{3} and~\lstinline{4} with a variable so we can search an arbitrarily large
+values~\lstinline{3} and~\lstinline{4} with a variable, so we can search an arbitrarily large
 range of values.
 
 \begin{code}
@@ -403,7 +403,7 @@ already been checked.
 
 MATLAB provides a \lstinline{gcd} function that computes the greatest common
 divisor of two numbers.  If \lstinline{gcd(a,b)} is greater than 1,
-\lstinline{a} and \lstinline{b} share a common factor and we can use the \lstinline{continue}
+\lstinline{a} and \lstinline{b} share a common factor, and we can use the \lstinline{continue}
 statement to skip to the next pair. Listing~\ref{lst:triples_function} contains the final version of this function:
 
 \begin{lstlisting}[caption={Our final Pythagorean triples function}, label={lst:triples_function}]
@@ -469,7 +469,7 @@ of the function call is the value(s) of the output variable(s).
 
 \end{enumerate}
 
-When you're reading a program and you come to a function call,
+When you're reading a program, and you come to a function call,
 there are two ways to interpret it. You can think about the mechanism I just described,
 and follow the execution of the program into the function and back, or you can assume that the function works correctly, and go on to the next statement after the function call.
 
@@ -512,7 +512,7 @@ In this chapter, we encountered relational operators and \lstinline{if} statemen
 We wrote a \emph{logical function}, which is a function that returns a logical value
 (\lstinline{1} for ``true'' or \lstinline{0}~for ``false'').
 
-We also saw an example of \emph{incremental development}, or developing programs gradually, adding just a few lines of code at a time and testing as you go.  If you develop programs this way, you will have fewer bugs and you will find them more quickly.
+We also saw an example of \emph{incremental development}, or developing programs gradually, adding just a few lines of code at a time and testing as you go.  If you develop programs this way, you will have fewer bugs, and you will find them more quickly.
 
 This chapter defined two new terms: \emph{encapsulation} is the process of wrapping part of a program in
 a function in order to limit interactions (including name collisions)

@@ -139,7 +139,7 @@ And lo!  It turns out to work on vectors because the MATLAB basic functions we u
 Y = 1.3818    1.3254    1.1311
 \end{code}
 
-Some of the other functions we wrote don't work on vectors,
+Some other functions we wrote don't work on vectors,
 but they can be patched up with just a little effort.  For example,
 here's \lstinline{hypotenuse} from Section~\ref{hypotenuse_exercise}:
 
@@ -187,7 +187,7 @@ function will also work on vectors.
 
 \subsection{Sums and Differences}
 
-Another common vector operation is \emph{cumulative sum}, which takes a vector as an input and computes a new vector that contains all of the partial sums of the original.  In math notation, if $V$ is the original vector, the elements of the cumulative sum, $C$, are
+Another common vector operation is \emph{cumulative sum}, which takes a vector as an input and computes a new vector that contains all the partial sums of the original.  In math notation, if $V$ is the original vector, the elements of the cumulative sum, $C$, are
 
 \index{cumulative sum}
 \index{sum!cumulative}
@@ -340,8 +340,7 @@ we were looking for, so the result is \lstinline{0}.
 \index{universal quantification}
 \index{quantification!universal}
 
-Another common operation on vectors is to check whether \emph{all}
-of the elements satisfy a condition, which is called \emph{universal quantification}, denoted with
+Another common operation on vectors is to check whether \emph{all} the elements satisfy a condition, which is called \emph{universal quantification}, denoted with
 the symbol $\forall$ and pronounced ``for all.''  So the expression % this expression
 %
 \[ \forall x \mbox{~in~} S: x>0 \]
@@ -365,13 +364,10 @@ that are nonpositive.
 
 \begin{ex}
 Write a function named \lstinline{forall} that
-takes a vector and returns \lstinline{1} if all of the elements are positive
-and \lstinline{0} if there are any nonpositive elements.
+takes a vector and returns \lstinline{1} if all the elements are positive
+and \lstinline{0} if there are any non-positive elements.
 
 \end{ex}
-
-
-
 
 \subsection{Logical Vectors}
 
@@ -527,7 +523,7 @@ This chapter presents patterns for working with vectors, including existential a
 We learned how to write functions that take vectors as input variables and return vectors as output variables.
 And we learned about \emph{logical vectors}, which contain the values 1 and 0 to represent true and false.
 
-Some of the functions in this chapter are not idiomatic MATLAB; many of them can be done more simply using built-in MATLAB operators and functions, rather than writing them yourself.  But these examples demonstrate concepts you will need to know when you work on more complicated problems.
+Some functions in this chapter are not idiomatic MATLAB; many of them can be done more simply using built-in MATLAB operators and functions, rather than writing them yourself.  But these examples demonstrate concepts you will need to know when you work on more complicated problems.
 
 In the next chapter, we will apply the tools we have learned so far to the central goal of this book, modeling physical systems.
 

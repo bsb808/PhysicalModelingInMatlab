@@ -2,9 +2,50 @@
 
 So far we've typed all of our programs ``at the prompt.'' If you're only writing a few lines, this isn't so bad. But what if you're writing a hundred? Retyping each line of code every time you want to change or test your program will be time-consuming and tedious. Luckily, you don't have to. In this chapter, we'll look at two ways to run many lines at once: \emph{scripts} and \emph{live scripts}.
 
+But, before we get to that let's discuss the generic term - a program.
+
+\section[What is a program?]{What is a program?\protect\footnote{This section is from Allen Downey's book, \href{https://greenteapress.com/wp/think-python-2e/}{Think Python}, 2e Edition.}}
+
+A {\bf program} is a sequence of instructions that specifies how to
+perform a computation.  The computation might be something
+mathematical, such as solving a system of equations or finding the
+roots of a polynomial, but it can also be a symbolic computation, such
+as searching and replacing text in a document or something
+graphical, like processing an image or playing a video.
+\index{program}
+
+The details look different in different languages, but a few basic
+instructions appear in just about every language:
+
+\begin{description}
+
+\item[input:] Get data from the keyboard, a file, the network, or some
+other device.
+
+\item[output:] Display data on the screen, save it in a
+file, send it over the network, etc.
+
+\item[math:] Perform basic mathematical operations like addition and
+multiplication.
+
+\item[conditional execution:] Check for certain conditions and
+run the appropriate code.
+
+\item[repetition:] Perform some action repeatedly, usually with
+some variation.
+
+\end{description}
+
+Believe it or not, that's pretty much all there is to it.  Every
+program you've ever used, no matter how complicated, is made up of
+instructions that look pretty much like these.  So you can think of
+programming as the process of breaking a large, complex task
+into smaller and smaller subtasks until the subtasks are
+simple enough to be performed with one of these basic instructions.
+
 \section{Scripts}
 
-A \emph{script} is a file that contains MATLAB code. When you run a script, MATLAB executes the commands in it, one after another, exactly as if you had typed them at the prompt. Scripts are
+A \emph{script} is a file that contains a MATLAB program. When you run a script, MATLAB executes the commands in it, one after another, exactly as if you had typed them at the prompt. Scripts are
 also sometimes called \emph{M-files} because they use the extension \emph{.m}, short for MATLAB.
 
 \index{script}
@@ -447,7 +488,7 @@ You can create a live script by clicking the \textbf{New->Live Script} button in
 
 Then press the \textbf{Save} button to save the file as \emph{mylivescript.mlx}.
 
-Now click the same green \textbf{Run} button (or hit F5) to run the scipt and see the result in the same document.  You can still call the live script from the Command Window:
+Now click the same green \textbf{Run} button (or hit F5) to run the script and see the result in the same document.  You can still call the live script from the Command Window:
 \begin{code}
   >> mylivescript
   x =
@@ -455,21 +496,21 @@ Now click the same green \textbf{Run} button (or hit F5) to run the scipt and se
 \end{code}
 But that is probably a rare use-case.
 
-In addition to saving the live script as an \emph{.mlx} file, you can also export the document in a variety of formats.  Here is what the a PDF export might look like:
+In addition to saving the live script as an \emph{.mlx} file, you can also export the document in a variety of formats.  Here is what the PDF export might look like:
 
 
 \includepdf[pages=-,frame,pagecommand={},width=0.9\textwidth]{../code/chap_scripts/mylivescript.pdf}
 
 \subsection{Example: The Fibonacci Sequence}
 
-Returning to our earlier example of a plain script, we can now combine the rich text of the description, inlcuding the expression for the Fibonacci number, into a live script with alternating text and code blocks.  The resulting PDF would look something like this: 
+Returning to our earlier example of a plain script, we can now combine the rich text of the description, including the expression for the Fibonacci number, into a live script with alternating text and code blocks.  The resulting PDF would look something like this: 
 
 \includepdf[pages=-,frame,pagecommand={},width=0.9\textwidth]{../code/chap_scripts/fibonacci1_live.pdf}
 %\includepdf[pages=-,frame,pagecommand={},width=0.9\textwidth]{../code/chap_scripts/mylivescript.pdf}
 
 \section{Chapter Review}
 
-This chapter presented scripts and live scirpts, suggesting reasons to use them.  We computed elements of a Fibonacci sequence, but because we used floating-point numbers, the results were sometimes only approximate.
+This chapter presented scripts and live scripts, suggesting reasons to use them.  We computed elements of a Fibonacci sequence, but because we used floating-point numbers, the results were sometimes only approximate.
 And we saw how to add comments to a program to document what it does and explain how it works.
 
 Here are some terms from this chapter you might want to remember.
@@ -518,34 +559,30 @@ y = 1
 \end{code}
 \end{ex}
 
-
-
-
-
 \begin{ex}
 \label{bikegame}
 \index{bike share system}
 
 Imagine that you are the operator of a bike-share system with two
-locations: Boston and Cambridge.
+locations: Monterey and Pacific Grove.
 
 You observe that every day 5 percent
-of the bikes in Boston are dropped off in Cambridge, and 3 percent of the bikes
-in Cambridge get dropped off in Boston.
+of the bikes in Monterey are dropped off in Pacific Grove, and 3 percent of the bikes
+in Pacific Grove get dropped off in Monterey.
 At the beginning of the month, there are 100 bikes at each location.
 
 Write a script called \emph{bike\textunderscore update.m} that updates the number
 of bikes in each location from one day to the next.  The precondition
-is that the variables \lstinline{b} and \lstinline{c} contain the number of bikes
+is that the variables \lstinline{m} and \lstinline{pg} contain the number of bikes
 in each location at the beginning of the day.  The postcondition
-is that \lstinline{b} and \lstinline{c} have been modified to reflect the net movement of bikes.
+is that \lstinline{m} and \lstinline{pg} have been modified to reflect the net movement of bikes.
 
-To test your program, initialize \lstinline{b} and \lstinline{c} at
+To test your program, initialize \lstinline{m} and \lstinline{pg} at
 the prompt and then execute the script.  The script should display
-the updated values of \lstinline{b} and \lstinline{c}, but not any intermediate
+the updated values of \lstinline{m} and \lstinline{pg}, but not any intermediate
 variables.
 
-Remember that bikes are countable things, so \lstinline{b} and \lstinline{c} should always be integer values.  You might want to use the \lstinline{round} function
+Remember that bikes are countable things, so \lstinline{m} and \lstinline{pg} should always be integer values.  You might want to use the \lstinline{round} function
 to compute the number of bikes that move each day.
 
 If you execute your script repeatedly, you can simulate the passage
@@ -554,6 +591,6 @@ of time from day to day (you can repeat a command by pressing the \keycap{up} ar
 What happens to the bikes?  Do they all end up in one place?  Does the system reach an equilibrium, does it oscillate, or does it do something else?
 
 In the next chapter, we will see how to execute your script automatically
-and how to plot the values of \lstinline{b} and \lstinline{c} over time.
+and how to plot the values of \lstinline{m} and \lstinline{pg} over time.
 
-\end{ex}
+\ end{ex}

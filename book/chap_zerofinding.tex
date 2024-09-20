@@ -206,7 +206,7 @@ x = 3
 ans = 3
 \end{code}
 
-Not surprisingly, it starts by computing $f(2)$ and $f(4)$.  Then it computes a point in the interval, $2.75$, and evaluates $f$ there.  After each iteration, the interval gets smaller and the guess gets closer to the true root.
+Not surprisingly, it starts by computing $f(2)$ and $f(4)$.  Then it computes a point in the interval, $2.75$, and evaluates $f$ there.  After each iteration, the interval gets smaller, and the guess gets closer to the true root.
 The \lstinline{fzero} function stops when the interval is so small that the estimated
 zero is correct to about 15~digits.
 
@@ -315,7 +315,7 @@ approximate the zeros visually.  Here is a short script to do just that:
 
 \lstinputlisting[style=mcode]{../code/chap_zerofinding/plot_error.m}
 
-We've used the \lstinline{linspace} command to create a vector starting at -2, ending with 5, with 100 elements. The \lstinline{grid on} command displays the gray gridlines, which help identify the zero crossings.  You may also notice that if you use by hovering the cursor over the graph, MATLAB will display the nearest data point values using the \emph{data tips} interactive tool, illustrated in Figure~\ref{f:error_data}
+We've used the \lstinline{linspace} command to create a vector starting at -2, ending with 5, with 100 elements. The \lstinline{grid on} command displays the gray grid lines, which help identify the zero crossings.  You may also notice that if you use by hovering the cursor over the graph, MATLAB will display the nearest data point values using the \emph{data tips} interactive tool, illustrated in Figure~\ref{f:error_data}
 
 \begin{figure}[h]
     \centerline{\includegraphics[width=0.7\textwidth]{images/error_w_data.png}}
@@ -344,7 +344,7 @@ y = error_func(x);
 \end{stdout}
 
 This means that MATLAB tried to call \lstinline{error_func} with a vector, and it failed.
-The problem is that it uses the \lstinline{*} and \lstinline{^} operators which refer to matrix operations that follow the rules of linear algebra.  In this case this is not what we we intend; instead we want to do \emph{element-wise} array multiplication and exponentiation (see ``\nameref{elementwise}'' on page~\pageref{elementwise}).
+The problem is that it uses the \lstinline{*} and \lstinline{^} operators which refer to matrix operations that follow the rules of linear algebra.  In this case this is not what we intended; instead we want to do \emph{element-wise} array multiplication and exponentiation (see ``\nameref{elementwise}'' on page~\pageref{elementwise}).
 
 \index{element-wise operator}
 \index{operator!element-wise}

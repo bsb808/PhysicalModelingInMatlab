@@ -7,7 +7,7 @@ In the previous chapter we used Euler's method and \lstinline{ode45} to solve a 
 
 \section{Matrices}
 
-Recall from the introduction to Chapter~\ref{vectors} that the MATLAB's fundamental datatype is an array.  Scalars, in MATLAB, are actually 1-by-1 arrays with a signle element and vectors are 1-by-N (or N-by-1) arrays with N elements.  We can even have empty arrays that have zero elements. We can demonstrate this by creating a few variables and interogating the workspace using \lstinline{whos} to see how they are stored:
+Recall from the introduction to Chapter~\ref{vectors} that the MATLAB's fundamental datatype is an array.  Scalars, in MATLAB, are actually 1-by-1 arrays with a single element and vectors are 1-by-N (or N-by-1) arrays with N elements.  We can even have empty arrays that have zero elements. We can demonstrate this by creating a few variables and interrogating the workspace using \lstinline{whos} to see how they are stored:
 
 \begin{code}
      >> clear;
@@ -27,7 +27,7 @@ Recall from the introduction to Chapter~\ref{vectors} that the MATLAB's fundamen
 A \emph{matrix} is a two-dimensional array.  Like a vector,
 it contains elements that are identified by indices.  The difference
 is that the elements are arranged in rows and columns, so it takes
-\emph{two} indices to identify an element.  Matrices are a powerful datatype because we can use tools from lienar algebra to operate on matrices (and vectors).  
+\emph{two} indices to identify an element.  Matrices are a powerful datatype because we can use tools from linear algebra to operate on matrices (and vectors).  
 
 \subsection{Creating a Matrix}
 
@@ -176,7 +176,7 @@ ans = 2
 
 The transpose operator, which looks remarkably like an apostrophe,
 computes the \emph{transpose} of a matrix, which is a new matrix
-that has all of the elements of the original, but with each row
+that has all the elements of the original, but with each row
 transformed into a column (or you can think of it the other way around).
 
 \index{transpose operator}
@@ -213,7 +213,7 @@ A generic form for a system of first-order, non-linear ODEs is the non-linear \e
 \begin{equation} \label{e:nonlinearstatespace}
 \dot{\mathbf{x}}(t) = \mathbf{f}(\mathbf{x}(t), \mathbf{u}(t))
 \end{equation}
-where \( \mathbf{x}(t) \) is the state vector, \( \mathbf{f} \) is a non-linear function of the state vector and \( \mathbf{u}(t) \) is the input vector.  We've used the notation convention hwere scalar variables are in in regular font (e.g., $t$), vectors are in bold font (e.g., $\mathbf{x}$) and matrices are capitalized (e.g., $A$).  If we can get our problem into this form, we can then apply a variety of MATLAB numerical tools to solve the system of equations.
+where \( \mathbf{x}(t) \) is the state vector, \( \mathbf{f} \) is a non-linear function of the state vector and \( \mathbf{u}(t) \) is the input vector.  We've used the notation convention where scalar variables are expressed in regular font (e.g., $t$), vectors are in bold font (e.g., $\mathbf{x}$) and matrices are capitalized (e.g., $A$).  If we can get our problem into this form, we can then apply a variety of MATLAB numerical tools to solve the system of equations.
 
 \subsection{Lotka-Volterra}
 \label{lotka}
@@ -226,7 +226,7 @@ species in an ecosystem, a predator and its prey.  As an example, we'll consider
 \index{fox}
 \index{system!of ODEs}
 
-The model is governed by the following system of system of first-order, non-linear differential equations:
+The model is governed by the following system of first-order, non-linear differential equations:
 
 \begin{eqnarray*}
     \frac{dx}{dt} &=& a x - b x y         \\

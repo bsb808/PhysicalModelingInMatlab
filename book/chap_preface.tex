@@ -1,5 +1,5 @@
 
-\chapter{Preface}
+\chapter*{Preface}
 
 Modeling and simulation are powerful tools for explaining the world, making predictions, designing things that work, and making them work better.  Learning to use these tools can be difficult; this book is my attempt to make the experience as enjoyable and productive as possible.
 
@@ -9,7 +9,7 @@ My goal is to help you develop these skills in a way you can apply immediately t
 
 This book presents the entire modeling process, including model selection, analysis, simulation, and validation.  I explain this process in Chapter~\ref{modeling}, and there are examples throughout the book.
 
-\section{Who This Book Is For}
+\section*{Who This Book Is For}
 
 To make this book accessible to the widest possible audience, I've tried to minimize the prerequisites.
 
@@ -19,48 +19,8 @@ I assume that you know trigonometry and some calculus, but not very much.  If yo
 
 I will assume you know basic physics, in particular the concepts of force, acceleration, velocity, and position.  If you know Newton's second law of motion in the form $F = m a$, that's enough.
 
-\section{Overview}
 
-Here's what you will find in this book:
-
-\begin{description}
-
-\item [Chapter 1: Modeling and Simulation] Presents the modeling framework we'll use in this book, introduces the MATLAB and Octave programming languages, and helps you debug some of the errors you are likely to make while you are getting started
-
-\item [Chapter 2: Scripts] Introduces scripts, which are files that contain MATLAB/Octave code.  It also presents variables, values, and the assignment statement
-
-\item [Chapter 3: Loops] Presents the \lstinline{for} loop, sequences, series, plotting, and a way of writing programs called incremental development
-
-\item [Chapter 4: Vectors] Introduces vectors, which provide a way to store a sequence of values.  And it presents common vector operators including reduce and apply
-
-\item [Chapter 5: Functions] Discusses name collisions and an important tool for avoiding them: functions.  It also explains input variables and function calls
-
-\item [Chapter 6: Conditionals] Presents conditional statements, which check for conditions and determine the behavior of programs.  And it introduces a program development process called encapsulation and generalization
-
-\item [Chapter 7: Zero-Finding] Introduces \lstinline{fzero}, which is a MATLAB function that finds the zeros, or roots, of nonlinear equations.  It also presents some tips that might help you with debugging
-
-\item [Chapter 8: Functions of Vectors] Combines two topics from previous chapters: vectors and functions.  It presents functions that take vectors as input variables and return them as output variables.  And it introduces logical vectors, which contain a sequence of true and false values.
-
-\item [Chapter 9: Ordinary Differential Equations] Introduces the most important idea in the book, differential equations, and two ways to solve them, Euler's method and a MATLAB function called \lstinline{ode45}
-
-\item [Chapter 10: Systems of ODEs] Uses a system of differential equations to simulate the interactions of predator and prey species and presents several ways to plot the results
-
-\item [Chapter 11: Second-Order Systems] Describes Newtonian motion using a second-order differential equation and uses \lstinline{ode45} to simulate falling objects with and without air resistance
-
-\item [Chapter 12: Two Dimensions] Extends the methods from the previous chapter to simulate projectiles like baseballs.  It introduces spatial vectors as a way to represent quantities with two and three dimensions
-
-\item [Chapter 13: Optimization] Introduces \lstinline{fminsearch}, which is a MATLAB function that searches for the maximum or minimum of a function
-
-\item [Chapter 14: Springs and Things] Adds new forces to the toolkit, including spring forces and universal gravitation.  It uses them to simulate the orbit of the Earth around the Sun
-
-\item [Chapter 15: Under the Hood] Reviews some of the MATLAB functions we've used---\lstinline{fzero}, \lstinline{ode45}, and \lstinline{fminsearch}---and explains more about how they work
-
-\end{description}
-
-I hope you enjoy the book and find it valuable.
-
-
-\section{Installing Software}
+\section*{MATLAB}
 
 This book is based on MATLAB, a programming language originally developed at the University of New Mexico and now produced by MathWorks, Inc.
 
@@ -70,19 +30,14 @@ However, one challenge for beginners is that MATLAB uses vectors and matrices fo
 
 Another drawback of MATLAB is that it is ``proprietary''; that is, it belongs to MathWorks, and you can only use it with a license, which can be expensive.
 
-\section{Working with the Code}
+\section*{Working with the Code}
 
-The code for each chapter in this book is in a ZIP file you can download from \url{https://greenteapress.com/matlab/zip}.
+The best way to read this book is with MATLAB open so that you can work the examples as you read.  
+
+The code for each chapter in this book is available on GitHub at \url{https://github.com/bsb808/PhysicalModelingInMatlab/tree/ae2440-dev/code}.  You can download all the code as a ZIP file or you can use the "Download raw file" from a browser to download each file,
+
+in a ZIP file you can download from \url{https://greenteapress.com/matlab/zip}.
 Once you have the ZIP file, you can unzip it on the command line by running
-
-\begin{code}
-unzip PhysicalModelingInMatlab-master.zip
-\end{code}
-
-In Windows you can right-click on the ZIP file and select \textbf{Extract All}.
-
-The result should be a folder than contains subfolders that contain files containing MATLAB code.
-They are plain text files, so you can read them with any application that reads text, but most often you will read them with MATLAB.
 
 I'll provide more information about working with these files when we get to them, but that should be enough to get you started.
 
@@ -94,9 +49,9 @@ MATLAB will give you the option to Change Folder or Add to Path.  If you change 
 However, as you add more folders to the path, you are more likely to run into problems with name collisions.
 I recommend you change folders when necessary and avoid adding folders to the path.
 
-\section{AE2440 Version}
+\section*{AE2440 Version}
 
-This `AE2440' version of the book is a customization and extention of Allen Downey's fourth edition of \href{https://greenteapress.com/wp/physical-modeling-in-matlab/}{Physical Modeling in MATLAB}.
+This `AE2440' version of the book is a customization and extension of Allen Downey's fourth edition of \href{https://greenteapress.com/wp/physical-modeling-in-matlab/}{Physical Modeling in MATLAB}.  I have also used some parts of Professor Downey's 2e edition of \href{https://greenteapress.com/wp/think-python-2e/}{Think Python}.   His free textbooks are very popular and distributed under permissive, open-source licenses.  You can read about why in his \href{https://greenteapress.com/free_books.html}{free textbook manifesto}.
 
 \section*{Contributors}
 

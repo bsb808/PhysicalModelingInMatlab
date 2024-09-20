@@ -165,7 +165,7 @@ If you're curious about how \lstinline{fminsearch} works, see ``\nameref{howfmin
 
 \section{Logical Errors}
 
-The \lstinline{fminsearch} algorithm often does a great job of finding a local minimum for a wide range of non-linear function, but there are lots of ways that things can go wrong.  This is a common issue with black-box solutions where the process of finding the solution is not clear.   The best way to avoid these logical bugs---where the program is doing exactly what we told it, but still doesn't give the result we intended---is to peer into the black-box. We can do this by setting some of the options available in the \lstinline{fminsearch} interface and looking at more of the outputs.  Here is an example:
+The \lstinline{fminsearch} algorithm often does a great job of finding a local minimum for a wide range of non-linear function, but there are lots of ways that things can go wrong.  This is a common issue with black-box solutions where the process of finding the solution is not clear.   The best way to avoid these logical bugs---where the program is doing exactly what we told it, but still doesn't give the result we intended---is to peer into the black-box. We can do this by setting some options available in the \lstinline{fminsearch} interface and looking at more of the outputs.  Here is an example:
 
 \begin{code}
     % Optimization options
@@ -175,7 +175,7 @@ The \lstinline{fminsearch} algorithm often does a great job of finding a local m
     [x, fval, exitflag, output] = fminsearch(@negative_range, theta0, options)
 \end{code}
 
-In the snippet above we use the \href{https://www.mathworks.com/help/matlab/ref/optimset.html}{\lstinline{optimset}} function to set parameters to values.  This is a common idiom in MATLAB where parameters are specified by \emph{Name} and \emph{Value}.  Here we are setting the parameter named \lstinline{Dispay} to the string value \lstinline{'iter'}.  Then we set the parameter named \lstinline{PlotFcns} to a cell array value with three function handles.  The eclipses, \lstinline{...}, tells MATLAB to continue the same command on the next line.  We have also added two additional output variables so that the algorithm is more verbose, giving us both the solution and some information about the solution.
+In the snippet above we use the \href{https://www.mathworks.com/help/matlab/ref/optimset.html}{\lstinline{optimset}} function to set parameters to values.  This is a common idiom in MATLAB where parameters are specified by \emph{Name} and \emph{Value}.  Here we are setting the parameter named \lstinline{Dispay} to the string value \lstinline{'iter'}.  Then we set the parameter named \lstinline{PlotFcns} to a cell array value with three function handles.  The eclipses, \lstinline{...}, tell MATLAB to continue the same command on the next line.  We have also added two additional output variables so that the algorithm is more verbose, giving us both the solution and some information about the solution.
 
 And here is what we get in return.  The \lstinline{Dispay='iter'} option results in the following output to the Command Window
 \begin{stdout}
@@ -339,7 +339,7 @@ to clear the figure and \lstinline{axis} to reset the axes.  Then it plots a cir
 \index{drawnow@\lstinline{drawnow}}
 
 We have to call \lstinline{drawnow} after \lstinline{plot} so
-that MATLAB actually displays each plot.  Otherwise it waits
+that MATLAB actually displays each plot.  Otherwise, it waits
 until you finish drawing all the figures and then updates
 the display.
 

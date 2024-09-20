@@ -53,7 +53,7 @@ Another way to present this model is to put it into linear \emph{state space} fo
 \begin{equation} \label{e:statespace}
     \dot{\mathbf{x}}(t) = A \mathbf{x}(t) + B \mathbf{u}(t) 
 \end{equation}
-where $\mathbf{x}(t)$ is the state vector of the system, $\mathbf{u}(t)$ is the input vector to the system, $A$ is the state transition matrix and $B$ is the input matrix.  Again we've used the notation convention hwere scalar variables are in in regular font (e.g., $t$), vectors are in bold font (e.g., $\mathbf{x}$) and matrices are capitalized (e.g., $A$).  This linear form is a special case of the more general non-linear state-space form in Equation~\ref{e:nonlinearstatespace}
+where $\mathbf{x}(t)$ is the state vector of the system, $\mathbf{u}(t)$ is the input vector to the system, $A$ is the state transition matrix and $B$ is the input matrix.  Again we've used the notation convention where scalar variables are expressed in regular font (e.g., $t$), vectors are in bold font (e.g., $\mathbf{x}$) and matrices are capitalized (e.g., $A$).  This linear form is a special case of the more general non-linear state-space form in Equation~\ref{e:nonlinearstatespace}
 
 To get our system of equations into state space form we can define the state vector as a column vector with elements of position ($r(t)$) and velocity ($v(t)$).
 
@@ -79,7 +79,7 @@ To get our system of equations into state space form we can define the state vec
 \left\{ a \right\}
 \end{equation}
 
-It turns out that any higher-order ordinary differential equation (ODE) can be transformed into a system of first-order ODEs. Numberical methods, such as \lstinline{ode45} are often setup to operate on these systems of first-order ODEs.  This example, of transforming a single second-order ODE into a system of two first-order ODEs is a specific example of a general approach.
+It turns out that any higher-order ordinary differential equation (ODE) can be transformed into a system of first-order ODEs. Numerical methods, such as \lstinline{ode45} are often setup to operate on these systems of first-order ODEs.  This example, of transforming a single second-order ODE into a system of two first-order ODEs is a specific example of a general approach.
 
 \section{Free Fall}
 \label{freefall}
@@ -314,8 +314,7 @@ function accel = acceleration(t, xx)
 end
 \end{lstlisting}
 
-First, we compute force due to drag. Then we compute acceleration due to drag .
-Lastly, we compute total acceleration due to drag and gravity.
+First, we compute force due to drag. Then we compute acceleration due to drag. Lastly, we compute total acceleration due to drag and gravity.
 
 \index{acceleration}
 \index{force}
@@ -340,7 +339,7 @@ end
 \end{code}
 
 In the previous version, acceleration is always \lstinline{-9.8}, the acceleration due to gravity.
-In this version, we call \lstinline{acceleration} to compute the total acceleration due to gravity and drag .
+In this version, we call \lstinline{acceleration} to compute the total acceleration due to gravity and drag.
 
 \begin{figure}[ht]
 \centerline{\includegraphics[width=0.7\textwidth]{../code/chap_secondordersystems/penny_event_drag.png}}
@@ -364,7 +363,7 @@ Here is the full script\dots
 
 In this chapter, we used Newton's laws of motion to write a differential equation that describes the motion of a falling penny.
 
-We rewrote that equation as a system of first-order differential equations so we could use \lstinline{ode45} to solve it.  Then we ran simulations of a falling penny with and without air resistance, also known as \emph{drag}.
+We rewrote that equation as a system of first-order differential equations, so we could use \lstinline{ode45} to solve it.  Then we ran simulations of a falling penny with and without air resistance, also known as \emph{drag}.
 
 We defined an \emph{event} as something of interest that happens during a simulation, like a collision between moving objects, and we wrote an \emph{event function}, which allows \lstinline{ode45} to figure out when an event occurs.
 

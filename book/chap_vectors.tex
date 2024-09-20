@@ -1,18 +1,8 @@
 \chapter{Vectors}
 \label{vectors}
 
-
-In the previous chapter we used a loop to compute the elements (scalars) of a sequence, but we were only able to store the last element.  In this chapter, we'll use a vector to store all of the elements in an array.
-We'll also learn how to select elements from a vector, and how to perform vector arithmetic and common vector operations like reduce and apply.
-
-MATLAB is an abbreviation for "matrix laboratory."  The program was designed to operate with matrices, arrays and vectors.  The \emph{array} datatype is the fundamental mechanism MATLAB uses for storing numerical elements, so scalars, vectors and matrices are all special types of arrays.  MATLAB uses this terminology as follows:
-
-\begin{description}
-\item[scalar:] an array with a single element.
-\item[vector:] a two-dimensional array that has a size 1-by-N (row) or N-by-1 (column).
-\item[matrix:] a two-dimensional array.
-\item[array:] may have more than two dimensions
-\end{description}
+In the previous chapter we used a loop to compute the elements (scalars) of a sequence, but we were only able to store the last element.  In this chapter, we'll use a vector to store all the elements in an array.
+We'll also learn how to select elements from a vector, and how to perform vector arithmetic and common vector operations like \emph{reduce} and \emph{apply}.
 
 \section{Creating Vectors}
 
@@ -110,7 +100,7 @@ Here are the syntax for some typical ways to create a vector:
 \index{vector arithmetic}
 \index{arithmetic!vector}
 
-As with numbers, you can do arithmetic with vectors.  However, operations with vectors can be done in more than one way, so to avoid logical errors, we need to be more intentional with the instructions we provide.  In general, MATLAB executes both \emph{array operations} and \emph{matrix operations}.   Matrix operations follow the rules of linear algrebra, while array operations execute element by element.  The syntax for each can be closely related.
+As with numbers, you can do arithmetic with vectors.  However, operations with vectors can be done in more than one way, so to avoid logical errors, we need to be more intentional with the instructions we provide.  In general, MATLAB executes both \emph{array operations} and \emph{matrix operations}.   Matrix operations follow the rules of linear algebra, while array operations execute element by element.  The syntax for each can be closely related.
 
 
 If you add a scalar to a vector, MATLAB does the array operation increments each element of the vector:
@@ -132,7 +122,7 @@ Z = 7     9    11
 \end{code}
 
 But adding vectors only works if the operands are the same size.
-Otherwise you get an error:
+Otherwise, you get an error:
 
 \begin{code}
 >> W = [1 2]
@@ -152,7 +142,7 @@ The \lstinline(size()) function can be helpful in debugging runtime errors of ve
     ans =
          1     2
 \end{code}
-might help us invesigate whey we received the `Matrix dimensions must agree' error.
+might help us investigate whey we received the `Matrix dimensions must agree' error.
 
 \index{matrix}
 \index{elementwise operator}
@@ -313,7 +303,7 @@ The \lstinline{end} keyword can help with indexing and slicing.  It refers to th
     ans =
          8
 \end{code}
-will index the last element in the vector no matter how many elements are inlcuded.  This is particularly helpful when slicing the last N elements of a vector:
+will index the last element in the vector no matter how many elements are included.  This is particularly helpful when slicing the last N elements of a vector:
 \begin{code}
     >> G = 1:10
     G =
@@ -391,7 +381,7 @@ the screen is unwieldy.
 
 \section{Common Vector Operations}
 
-We've covered some of the basic features of vectors. Let's now look at some common patterns we use to work with data stored in vectors.
+We've covered some basic features of vectors. Let's now look at some common patterns we use to work with data stored in vectors.
 
 \subsection{Reduce}
 \label{reduce}

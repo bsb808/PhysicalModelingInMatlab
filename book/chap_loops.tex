@@ -80,7 +80,7 @@ The more you understand bugs, the better you will be at debugging. Here are a fe
 
 \item[Runtime error] Your program starts running, but something goes wrong along the way.  For example, if you try to access a variable that doesn't exist, that's a runtime error.  Division by zero is another example.  When the interpreter detects the problem, it prints an error message and stops.\index{error!runtime}
 
-\item[Logical error] Your program runs without generating any error messages, but it doesn't do what you intended.  The problem in the previous section, where we changed the value of \lstinline{b} before reading the old value, is a logical error.\index{error!logical}  Logical errors include some specific sub-species:
+\item[Logical error] Your program runs without generating any error messages, but it doesn't do what you intended.  The problem in the previous section, where we changed the value of \lstinline{b} before reading the old value, is a logical error.\index{error!logical}  Logical errors include some specific subspecies:
 \begin{description}
     \item [Semantic error] The meaning inherent in the program is different from your intended meaning.  For example, your use the command \lstinline{sin(90)}, expecting MATLAB to interpret that as the sine of a \SI{90}{\degree} angle, but MATLAB returns 0.894 because the function expects the argument in radians.
     \item [Type error] Errors involving incompatible data types.  We'll see examples of this later, such as trying to add a string (letters) to numbers.
@@ -465,7 +465,7 @@ and confirm that you are running the program you think you are
 running.
 This step is important, because in most environments there
 are little things that can trip you up when you start a new
-project.  Get them out of the way so you can focus on programming.
+project.  Get them out of the way, so you can focus on programming.
 
 \item Make one small, testable change at a time.  A \emph{testable}
 change is one that displays something on the screen (or has some
@@ -501,7 +501,7 @@ choose steps that get from \lstinline{x = 5} to the program you're trying
 to write.  We'll look at an extended example in Chapter~6.
 
 If you find yourself writing more than a few lines of code before
-you start testing and you're spending a lot of time debugging,
+you start testing, and you're spending a lot of time debugging,
 you should try incremental development.
 
 
@@ -531,7 +531,7 @@ Sometimes we compute the elements of a sequence \emph{recurrently}, which means 
 
 \emph{Generalization} is a way to make a program more versatile, for example, by replacing a specific value with a variable that can have any value.
 \emph{Incremental development} is a way of programming by making a series of small, testable changes.
-\emph{Scaffolding} is code you write to help you program or debug but
+\emph{Scaffolding} is code you write to help you program or debug, but
 that is not part of the finished program.
 
 In the next chapter, we'll use a vector to store the results from a loop.
