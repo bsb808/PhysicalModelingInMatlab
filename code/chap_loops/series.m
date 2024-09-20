@@ -3,7 +3,7 @@
 a = 1;
 total = a;
 
-for i=2:n
+for ii = 2:n
     a = a/2;
     total = total + a;
 end

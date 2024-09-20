@@ -306,55 +306,45 @@ $A_1$, followed by $A_2$, and so on.
 \index{loop}
 \index{geometric sequence}
 
-A \lstinline{for} loop is a natural way to compute the elements of a sequence.
-As an example, in a geometric sequence, each element is a constant
-multiple of the previous element.  As a more specific example, let's
-look at the sequence with $A_1 = 1$ and the relationship $A_{i+1} = A_i/2$,
-for all $i$.  In other words, each element is half as big as the one before it.
+A \lstinline{for} loop is a natural way to compute the elements of a sequence. As an example, in a \href{https://en.wikipedia.org/wiki/Geometric_progression}{geometric sequence}, each element is a constant multiple of the previous element.  Expressed mathematically, element $i+1$ (the next element) of the sequence can be expressed as the product of the element $i$ (the previos element) and the constant \emph{common ratio}, $r$ or
+\begin{equation*}
+A_{i+1} = A_{i} r.
+\end{equation*}
+
+As a more specific example, let's
+look at the sequence with $A_1 = 1$ and $r=1/2$ so that the relationship $A_{i+1} = A_i/2$, for all $i$.  In other words, each element is half as big as the one before it.
 
 The following loop computes the first 10 elements of $A$:
 
 \begin{code}
 a = 1
-for i=2:10
-    a = a/2
+r = 1/2
+for ii = 2:10
+    a = a * r
 end
 \end{code}
 
-The first line initializes the variable \lstinline{a} with the first element of the sequence, $A_1$.
-Each time through the loop, we find the next value of \lstinline{a}
+The first line initializes the variable \lstinline{a} with the first element of the sequence, $A_1$. Each time through the loop, we find the next value of \lstinline{a}
 by dividing the previous value by~2, and assign the result back to \lstinline{a}.
-At the end, \lstinline{a} contains the 10th element.
+At the end, \lstinline{a} contains the 10th element.  The reason we use the variable \lstinline{ii} instead of just \lstinline{i} is that MATLAB defines bot \lstinline{i} and \lstinline{j} as complex numbers, so using either as a variable causes a naming collision that may be tough to debug.
 
 The other elements are displayed on the screen, but they are not saved in a variable.
-Later, we'll see how to save the elements of a sequence in a vector.
+Later, we'll see how to store the elements of a sequence in a vector.
 
 \index{direct computation}
 \index{recurrent computation}
 
-This loop computes the sequence \emph{recurrently}, which means
-that each element depends on the previous one.
-For this sequence, it's also possible to compute the $i$th element
-\emph{directly}, as a function of $i$, without using the previous element.
-
-In math notation, $A_i = A_1 r^{i-1}$, where $r$ is the ratio of successive elements.
-In the previous example, $A_{i+1} = A_i/2$, so $r = 1/2$.
+This loop computes the sequence \emph{recurrently}, which means that each element depends on the previous one. For this sequence, it's also possible to compute the $i$th element \emph{directly}, as a function of $ii$, without using the previous element. In math notation, $A_i = A_1 r^{ii-1}$.
 
 \begin{ex}
 Write a script named \emph{sequence.m} that uses a loop to
 compute elements of $A$ \mbox{directly}.
 \end{ex}
 
-
 \section{Series}
 \label{series}
 
-In mathematics, a \emph{series} is the sum of the elements of
-a sequence.  It's a terrible name, because in common English,
-``sequence'' and ``series'' mean pretty much the same thing, but in
-math, a sequence is a set of numbers, and a series is an expression
-(a sum) that has a single value.  In math notation,  a series
-is often written using the summation symbol $\sum$.
+In mathematics, a \emph{series} is the sum of the elements of a sequence.  It's a terrible name, because in common English, ``sequence'' and ``series'' mean pretty much the same thing, but in math, a sequence is a set of numbers, and a series is an expression (a sum) that has a single value.  In math notation,  a series is often written using the summation symbol $\sum$.
 
 \index{series}
 \index{sum}
@@ -369,8 +359,8 @@ A \lstinline{for} loop is a natural way to compute the value of this series:
 \begin{lstlisting}[caption={A program that calculates a simple series}, label={lst:series_10}]
 A1 = 1;
 total = 0;
-for i=1:10
-    a = A1 * (1/2)^(i-1);
+for ii = 1:10
+    a = A1 * (1/2)^(ii-1);
     total = total + a;
 end
 ans = total
