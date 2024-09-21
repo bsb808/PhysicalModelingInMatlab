@@ -16,4 +16,11 @@ rand(1,5)
 [5; 3.1; 9.8; -2;]
 % As a column using transpose
 [5 3.1 9.8 -2]'
+
+% Linear spacing from A to B with N elements
+linspace(0, 1, 5)
+
+% Logrithmic spacing from 10^A to 10^B with N elements
+logspace(0, 1, 5)
+
 echo off;
