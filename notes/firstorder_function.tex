@@ -1,0 +1,74 @@
+\documentclass[11pt]{article}
+%\usepackage[firstpage]{draftwatermark}
+\usepackage{times}
+\usepackage{pdfpages}
+\usepackage{fullpage}
+\usepackage{url}
+\usepackage{hyperref}
+\usepackage{fancyhdr}
+\usepackage{graphicx}
+\usepackage{tabularx}
+\usepackage{enumitem}
+\usepackage{indentfirst}
+\usepackage{subcaption}
+\usepackage{amsmath, amsfonts, amsthm, fouriernc}
+\usepackage{units}
+\usepackage{IEEEtrantools}
+
+\usepackage{color,soul}
+\DeclareRobustCommand{\hlr}[1]{{\sethlcolor{red}\hl{#1}}}
+\DeclareRobustCommand{\hlg}[1]{{\sethlcolor{green}\hl{#1}}}
+\DeclareRobustCommand{\hlb}[1]{{\sethlcolor{blue}\hl{#1}}}
+\DeclareRobustCommand{\hly}[1]{{\sethlcolor{yellow}\hl{#1}}}
+
+
+
+\addtolength{\headheight}{2em}
+\addtolength{\headsep}{1.5em}
+\rhead{AE2440}
+
+\setlength\parindent{0pt}
+
+\begin{document}
+
+\begin{center}
+  \Large{\bf First-Order Response Functions}
+\end{center}
+
+In Exercise 4.7 we used a plot to visualize the \emph{free-response} to a first-order, linear ODE.  In this exercise you will write a function to plot the \emph{forced-response} of the system, when the forcing function, the right-hand side of the equation, is constant.  The ODE is 
+\[
+\dot{y}(t) + (1/\tau) y(t) = f
+\]
+where $\tau$ is the time constant of the ODE and the constant, non-zero forcing function.  The solution to this ODE is 
+\[
+y(t) = f(1-e^{-t/\tau}).
+\]
+
+Create a live-script named \textbf{firstorder\_function.mlx}.   Add a local function to the live-script that\dots
+\begin{itemize}
+\item Has three input arguments: $\tau$, $f$ and a label string
+\item Adds a plot to the current axes of the solution, $y(t)$, for the given parameters.  The function should plot the solution at 100 evenly spaced points between $t = 0-4\tau$.
+The label string should be assigned to the legend display using the \texttt{DisplayName} property - see \url{https://www.mathworks.com/help/matlab/creating_plots/add-legend-to-graph.html}
+\item Has two outputs: a vector of the time values ($t$) and a vector of the solution values ($y(t)$) used to generate the plot
+\end{itemize}
+
+At this point it is a good idea to test your local function with some nominal values to make sure it works.  Try it with $\tau=1$, $f=1$ and label = \texttt{"hello"} to verify you get a plot as expected.
+
+\vspace{1em}
+Now, in the live-script, call the local function to plot the solution equation for three cases: 
+
+\begin{tabular}{|c|c|}
+    \hline
+    $\tau$ & $f$ \\
+    \hline
+    0.2   & 3   \\
+    \hline
+    2   & 2   \\
+    \hline
+    4   & 1   \\
+    \hline
+\end{tabular}
+
+The final graph should have a legend and labels with units on the axes.
+
+\end{document}
