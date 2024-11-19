@@ -96,10 +96,6 @@ Error in types_examples (line 19)
 h_w = "hello" - " world!"
 \end{code}
 
-\begin{ex}
-    Write local function called \lstinline{robust_division(a,b)} that prints the quotient of two numbers $a/b$ to the screen with three significant figures. If the result is a \lstinline{NaN}, print \lstinline{Not a Number}.  If the result is \lstinline{Inf}, print \lstinline{Infinity}.  If either of the input variables is an integer type, convert to a floating-point type before execution the division.  Include the local function in an \emph{M-file} that tests the various cases.  
-\end{ex}
-
 
 \subsection{Creating Strings}
 
@@ -281,7 +277,15 @@ people = struct('name', {'Alice', 'Bob'}, 'age', {25, 30});
 
 %\subsection{Dictionaries}
 
+\section{Exercises}
 
+\begin{ex}
+    Numeric data types and formatting strings.
+
+    Create an m-file named \lstinline{rdivision.m}.  Within that script include a local function called \lstinline{robust_division(a,b)} that calculates the quotient of two numbers, $a/b$. The function should be \emph{fruitless}, without any return value.  The function should print a single string. The function should avoid integer division so that integer type inputs are converted to floating-point values (doubles).  If the result is a \lstinline{NaN}, print \lstinline{"Not a Number"}.  If the result is \lstinline{Inf}, print \lstinline{"Infinity"}. Otherwise, the function should print the result to the screen with three numbers to the right of the decimal point.
+    
+    Within the same script include sufficient tests to verify the operation of the local function.  
+\end{ex}
 
 
 
