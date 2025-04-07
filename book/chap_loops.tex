@@ -203,13 +203,19 @@ As this example shows, you \emph{can} run a \lstinline{for} loop from the
 command line, but it's more common to put it in a script.
 
 \begin{ex}
-Create a script named \emph{bike\textunderscore loop.m} that uses a \lstinline{for} loop to run \emph{bike\textunderscore update.m} 30 times.  Before you run it, you have to assign values to \lstinline{b} and \lstinline{c}.
-For this exercise, start with the values \textbf{\lstinline{m = 100}} and \textbf{\lstinline{pg = 100}}.
+Create a live script named \emph{bike\textunderscore loop.mlx} that does the following:
+\begin{enumerate}
+\item Assign the initial values (precondition) of \textbf{\lstinline{m = 100}} and \textbf{\lstinline{pg = 100}}.
+\item Run the \lstinline{for} loop from 1 to 30.
+\begin{enumerate}
+    \item Inside the loop, call the program \emph{bike\textunderscore update.m} to update the values of \lstinline{m} and \lstinline{pg}.  The program should echo the values of \lstinline{m} and \lstinline{pg} after each update.
+\end{enumerate}
+\end{enumerate}
 
 If everything goes smoothly, your script will display a long stream
 of numbers on the screen.  It's probably too long
 to fit, and even if it did fit, it would be hard to interpret.
-A graph would be much better!
+A graph (coming soon) would be much better!
 \end{ex}
 
 
@@ -288,7 +294,7 @@ If you run the code above, you should see a figure with three circles and text l
 \end{figure}
 
 \begin{ex}
-Modify \emph{bike\textunderscore loop.m} so that it clears the figure before running the loop.  Then, each time through the loop, it should plot the value of \lstinline{m} versus the value of \lstinline{ii} with a red circle.
+Using \emph{bike\textunderscore loop.mlx} as a starting point, develop a live script \emph{bike\textunderscore loop\textunderscore plot.mlx} so that it clears the figure before running the loop.  Then, each time through the loop, it should plot the value of \lstinline{m} versus the value of \lstinline{ii} with a red circle.
 
 Once you get that working, modify it so it plots the values of \lstinline{pg} with blue diamonds.
 \end{ex}
