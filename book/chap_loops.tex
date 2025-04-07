@@ -25,13 +25,13 @@ pg = pg + 0.05*m - 0.03*pg
 \end{code}
 
 But that would be wrong, so very wrong.  Why?  The problem is that
-the first line changes the value of \lstinline{b}, so when the second line
-runs, it gets the old value of \lstinline{c} and the new value of \lstinline{b}.
-As a result, the change in \lstinline{b} is not always the same as the
-change in \lstinline{c}, which violates the Principle of Conservation
+the first line changes the value of \lstinline{m}, so when the second line
+runs, it gets the old value of \lstinline{pg} and the new value of \lstinline{m}.
+As a result, the change in \lstinline{m} is not always the same as the
+change in \lstinline{pg}, which violates the Principle of Conservation
 of Bikes!
 
-One solution is to use temporary variables like \lstinline{b_new} and \lstinline{c_new}:
+One solution is to use temporary variables like \lstinline{m_new} and \lstinline{pg_new}:
 
 \begin{code}
 m_new = m - 0.05*m + 0.03*pg
@@ -204,7 +204,7 @@ command line, but it's more common to put it in a script.
 
 \begin{ex}
 Create a script named \emph{bike\textunderscore loop.m} that uses a \lstinline{for} loop to run \emph{bike\textunderscore update.m} 30 times.  Before you run it, you have to assign values to \lstinline{b} and \lstinline{c}.
-For this exercise, start with the values \textbf{\lstinline{b = 100}} and \textbf{\lstinline{c = 100}}.
+For this exercise, start with the values \textbf{\lstinline{m = 100}} and \textbf{\lstinline{pg = 100}}.
 
 If everything goes smoothly, your script will display a long stream
 of numbers on the screen.  It's probably too long
@@ -288,9 +288,9 @@ If you run the code above, you should see a figure with three circles and text l
 \end{figure}
 
 \begin{ex}
-Modify \emph{bike\textunderscore loop.m} so that it clears the figure before running the loop.  Then, each time through the loop, it should plot the value of \lstinline{b} versus the value of \lstinline{i} with a red circle.
+Modify \emph{bike\textunderscore loop.m} so that it clears the figure before running the loop.  Then, each time through the loop, it should plot the value of \lstinline{m} versus the value of \lstinline{ii} with a red circle.
 
-Once you get that working, modify it so it plots the values of \lstinline{c} with blue diamonds.
+Once you get that working, modify it so it plots the values of \lstinline{pg} with blue diamonds.
 \end{ex}
 
 

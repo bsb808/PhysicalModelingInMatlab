@@ -578,7 +578,14 @@ in each location at the beginning of the day.  The postcondition
 is that \lstinline{m} and \lstinline{pg} have been modified to reflect the net movement of bikes.
 
 To test your program, initialize \lstinline{m} and \lstinline{pg} at
-the prompt and then execute the script.  The script should display
+the command prompt, then execute the script.  
+\begin{code}
+>> m = 100
+>> pg = 100
+>> bike_update
+\end{code}
+
+The script should display
 the updated values of \lstinline{m} and \lstinline{pg}, but not any intermediate
 variables.
 
@@ -586,7 +593,7 @@ Remember that bikes are countable things, so \lstinline{m} and \lstinline{pg} sh
 to compute the number of bikes that move each day.
 
 If you execute your script repeatedly, you can simulate the passage
-of time from day to day (you can repeat a command by pressing the \keycap{up} arrow and then \keycap{enter}).
+of time from day to day (you can repeat a command by pressing the \keycap{up} arrow and then \keycap{enter} - or by clicking the "Run" button repeatedly in the MATLAB editor).
 
 What happens to the bikes?  Do they all end up in one place?  Does the system reach an equilibrium, does it oscillate, or does it do something else?
 
